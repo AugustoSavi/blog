@@ -1,0 +1,38 @@
+---
+title: "Saga Pattern: Gerenciando Transações em um Mundo sem 'Commit' Global"
+date: 2026-02-06 09:00:00 -0300
+categories: [Arquitetura Distribuída, Microserviços]
+tags: [arquitetura distribuída, microserviços]
+render_with_liquid: false
+---
+
+Em um monólito, se você precisa salvar um pedido e baixar o estoque, você usa uma transação `@Transactional` e o banco garante o ACID. Mas e se o Pedido estiver no Microserviço A e o Estoque no Microserviço B? Como garantir que os dois aconteçam ou os dois falhem? O **Saga Pattern** é a resposta.
+
+## O Fim das Transações Distribuídas (2PC)
+
+Antigamente usávamos transações distribuídas (Two-Phase Commit), mas elas são lentas e não escalam bem na nuvem. O Saga resolve isso usando uma sequência de **transações locais** e **mensageria**.
+
+## Como funciona a Saga
+
+Uma Saga é uma sequência de transações locais. Cada transação atualiza o banco e dispara um evento para a próxima etapa. Se uma etapa falhar, a Saga deve executar **Transações de Compensação** (Undo) para desfazer o que foi feito nas etapas anteriores.
+
+## Os Dois Tipos de Sagas
+
+1.  **Coreografia:** Não há um "mestre". Cada serviço sabe o que fazer quando recebe um evento. (Ex: "Estoque reservado" -> "Processar Pagamento"). É fácil de começar, mas difícil de visualizar em fluxos complexos.
+2.  **Orquestração:** Existe um serviço central (Orquestrador) que diz a todos o que fazer. Se o pagamento falhar, o Orquestrador manda o comando "Estornar Estoque" para o serviço correspondente. É mais fácil de debugar e monitorar.
+
+## Exemplo de Fluxo de Compensação
+
+1.  Serviço de Pedido: Cria pedido (PENDING).
+2.  Serviço de Estoque: Reserva item (OK).
+3.  Serviço de Pagamento: Processa (FALHA).
+4.  **Compensação:** Serviço de Estoque recebe evento de falha e devolve o item (CANCELADO).
+5.  **Compensação:** Serviço de Pedido marca como (ERRO).
+
+## Por que é difícil?
+
+Diferente do banco de dados, o Saga não garante o "I" (Isolamento) do ACID. Um usuário pode ver um pedido como "Criado" antes mesmo do estoque ser confirmado. Seu sistema precisa estar preparado para lidar com essa "Consistência Eventual".
+
+## Conclusão
+
+O Saga Pattern é a ferramenta definitiva para manter a integridade dos dados em arquiteturas de microserviços. Ele troca a simplicidade do commit atômico pela resiliência e escalabilidade de um sistema distribuído coordenado por eventos.
