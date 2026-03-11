@@ -98,3 +98,4 @@ Essas flags dizem à JVM para olhar o limite do cgroup (o limite do container) e
 ## Conclusão
 
 Dimensionar a JVM não é apenas configurar o `-Xmx`. É entender o consumo holístico de memória do processo Java. Comece monitorando o NMT e as métricas de Metaspace, e sempre deixe uma margem de manobra para a memória nativa. No mundo de microserviços, ser preciso no uso de recursos é a diferença entre uma infraestrutura barata e estável ou uma cheia de instabilidades inexplicáveis.
+
