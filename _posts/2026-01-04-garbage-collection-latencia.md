@@ -1,5 +1,5 @@
 ---
-title: "O Coração da Performance: Entendendo o Garbage Collection e as Pausas Stop-the-World"
+title: "Entendendo o Garbage Collection e as Pausas Stop-the-World"
 date: 2026-01-04 09:00:00 -0300
 categories: [Java, JVM]
 tags: [java, jvm]
@@ -42,6 +42,6 @@ Se você quer ver o que está acontecendo, adicione estas flags:
 
 As threads não param em qualquer lugar. O GC espera que elas alcancem um **Safepoint** (geralmente em loops ou retornos de métodos). Se uma thread estiver presa em um cálculo pesado sem safepoints, ela pode atrasar o início do GC, fazendo com que todas as outras threads fiquem esperando paradas.
 
-## Conclusão
+## Takeaway Prático: Latência vs Throughput
 
-Entender o impacto do GC é essencial. Se o seu sistema exige resposta rápida, pare de ignorar os logs de GC e escolha o coletor certo para a sua carga de trabalho.
+Ao configurar sua JVM, defina sua prioridade clara: se você opera um sistema de mensageria ou trading, utilize **ZGC** ou **Shenandoah** para manter pausas consistentes abaixo de 1ms. Se o seu foco é processamento em lote (batch) onde o tempo total de execução importa mais que interrupções momentâneas, o **Parallel GC** ainda é sua ferramenta mais eficiente. Não aceite o padrão sem antes medir sua "Stop-the-World" budget.

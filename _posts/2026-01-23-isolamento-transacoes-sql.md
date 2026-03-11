@@ -1,5 +1,5 @@
 ---
-title: "Isolamento de Transações: READ COMMITTED vs REPEATABLE READ"
+title: "READ COMMITTED vs REPEATABLE READ"
 date: 2026-01-23 09:00:00 -0300
 categories: [Banco de Dados, SQL]
 tags: [banco de dados, sql]
@@ -44,6 +44,6 @@ public void processAudit() { ... }
 
 **Dica:** A maioria das aplicações web funciona perfeitamente com `READ COMMITTED`. O `REPEATABLE READ` é mais seguro para processos de auditoria ou relatórios financeiros onde a consistência interna da transação é vital, mas ele consome mais recursos do banco e pode gerar mais `Deadlocks`.
 
-## Conclusão
+## Uma Pergunta para sua Próxima Transação
 
-Isolamento de banco de dados é um trade-off. Quanto maior o isolamento, maior a segurança dos dados, mas menor a concorrência. Conhecer o padrão do seu banco de dados (MySQL vs Postgres) evita bugs silenciosos de concorrência que são impossíveis de reproduzir em ambientes de teste.
+Você realmente precisa do isolamento `REPEATABLE READ` para esse fluxo, ou está apenas aceitando o padrão do seu banco de dados (como no caso do MySQL)? Muitas vezes, bugs de concorrência e deadlocks em produção são causados por níveis de isolamento excessivamente rigorosos para casos de uso simples. Ao projetar seu próximo serviço, questione: qual é o custo aceitável de uma leitura inconsistente versus o custo de travar o banco para garantir a perfeição?

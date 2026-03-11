@@ -26,6 +26,6 @@ A principal diferença é o modelo mental:
 - **Use Kafka** para o fluxo de transações de cartão, onde o volume é imenso e você precisa de auditoria e streaming de dados em tempo real.
 - **Use Azure Service Bus** para fluxos de negócio complexos, como o gerenciamento de despesas, onde cada mensagem representa um comando que deve ser processado com garantias rigorosas e possíveis atrasos agendados.
 
-## Conclusão
+## Voltando à escolha certa
 
-Não existe "melhor" ferramenta, apenas a ferramenta certa para o problema certo. Conhecer Azure Service Bus demonstra que você tem um repertório amplo de soluções para lidar com a complexidade de sistemas distribuídos e multi cloud.
+No final das contas, a dúvida entre Azure Service Bus e Kafka não deve ser resolvida por qual ferramenta é mais "moderna", mas por qual atende ao seu requisito de negócio: você precisa de um **log imutável** para processar milhões de eventos de streaming ou de um **broker robusto** para garantir que cada comando de despesa seja executado com transacionalidade e agendamento? Escolha o Service Bus pela sofisticação funcional e o Kafka pela força bruta e escalabilidade.

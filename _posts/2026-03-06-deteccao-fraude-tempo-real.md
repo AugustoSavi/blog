@@ -79,6 +79,6 @@ Sistemas automáticos não são perfeitos. Muitas transações caem em uma zona 
 
 O maior custo de um antifraude não é a fraude em si, mas o **Falso Positivo** (bloquear um cliente legítimo). Cada vez que você bloqueia um cliente que está tentando comprar pão, você corre o risco de perder esse cliente para sempre. Por isso, modelos de ML em produção são otimizados para maximizar a precisão mesmo que isso signifique deixar passar algumas fraudes pequenas.
 
-## Conclusão
+## Insight final
 
-Detecção de fraude em tempo real é um jogo de milissegundos. Ao combinar **regras rápidas** com **processamento de streams** e **modelos de ML assíncronos**, você cria uma muralha de proteção que garante a segurança do seu sistema sem sacrificar a experiência do usuário. Essa área exige entender que a melhor segurança é aquela que ninguém percebe.
+A detecção de fraude de elite não é medida apenas por quantos ataques ela bloqueia, mas por quão invisível ela é para o usuário legítimo. O verdadeiro sucesso de um sistema antifraude reside na capacidade de agir com a precisão de um cirurgião: removendo a ameaça em milissegundos sem causar uma única cicatriz na jornada de compra do cliente. No mundo dos pagamentos, a melhor segurança é aquela que permite que a vida flua sem interrupções.

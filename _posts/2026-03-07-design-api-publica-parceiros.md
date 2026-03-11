@@ -76,6 +76,6 @@ Sua API é tão boa quanto sua documentação. Use o padrão **OpenAPI (Swagger)
 
 Sabia que o Facebook e o GitHub mantêm versões antigas de suas APIs por anos? Adicionar campos novos ao JSON é seguro (quase sempre). Mas remover campos, mudar nomes ou alterar o comportamento de um status code (ex: mudar de 201 para 202) são **Breaking Changes**. Evite-as a todo custo dentro da mesma versão principal.
 
-## Conclusão
+## O Princípio da Empatia do Desenvolvedor
 
-Projetar APIs públicas é um exercício de disciplina técnica. Ao focar em **segurança, idempotência e versionamento**, você garante que sua plataforma seja escalável e confiável. Uma boa API pública é aquela que é invisível: o parceiro integra, o sistema funciona e ninguém precisa de suporte por meses.
+A regra de ouro para APIs públicas é: **projete para o desenvolvedor que está cansado e com pressa.** Se a sua API exige que ele leia 50 páginas de documentação antes de fazer o primeiro `Hello World`, você falhou. Uma API pública de sucesso deve ser intuitiva, segura por padrão e oferecer um caminho de menor resistência para que o parceiro gere valor o mais rápido possível.

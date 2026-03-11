@@ -45,6 +45,6 @@ public void calculate() {
 
 O JIT é audacioso. Se ele notar que um `if (condicao)` é quase sempre falso, ele pode compilar o código assumindo que ele *nunca* será verdadeiro. Se um dia a condição mudar, a JVM faz uma **Deoptimization**, descarta o código nativo e volta para o interpretador para aprender novamente. Isso permite gerar o código mais eficiente possível para o "caminho feliz".
 
-## Conclusão
+## Insight Final: A Inteligência do Runtime
 
-O JIT Compiler é a razão pela qual o Java é a escolha preferida para sistemas corporativos de larga escala. Ele permite que você escreva código portável e seguro, enquanto ele se encarrega de espremer cada gota de performance do hardware por baixo dos panos.
+A grande vantagem do JIT sobre a compilação estática (AOT) é a capacidade de otimizar com base em dados reais de execução. Enquanto um compilador C++ precisa prever caminhos, o JIT da JVM observa seu código "vivo" e o molda continuamente para o hardware onde ele está rodando. No mundo da engenharia, performance não é apenas sobre o que você escreve, mas sobre quão bem seu runtime consegue reescrevê-lo durante a batalha.

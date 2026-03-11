@@ -23,12 +23,19 @@ Não basta rodar o código; é preciso saber onde ele mora e como ele escala.
 ## Segurança: O Pilar do IAM
 
 O **IAM (Identity and Access Management)** é o serviço mais importante.
-- **Regra de Ouro:** *Least Privilege* (Menor Privilégio). Seu microserviço só deve ter permissão para ler o bucket S3 que ele realmente usa, e nada mais.
+- **Regra:** *Least Privilege* (Menor Privilégio). Seu microserviço só deve ter permissão para ler o bucket S3 que ele realmente usa, e nada mais.
 
 ## Curiosidade: Infraestrutura como Código (IaC)
 
 Não crie recursos clicando no console da AWS. Use **Terraform** ou **AWS CDK**. Isso garante que o ambiente de Staging seja idêntico ao de Produção e que a infraestrutura possa ser destruída e recriada em minutos se necessário.
 
-## Conclusão
+## Checklist Cloud-Native para Back-Ends
 
-Entender AWS é sair da "caixinha" do código e passar a ver o sistema como um todo. O conhecimento de nuvem permite que você projete soluções que não apenas funcionam, mas que são resilientes, seguras e economicamente viáveis.
+Antes de subir seu próximo serviço na AWS, verifique:
+- [ ] Minha aplicação lê configurações do **Parameter Store** ou **Secrets Manager**?
+- [ ] A role do IAM segue o princípio do **menor privilégio**?
+- [ ] Os logs estão sendo enviados corretamente para o **CloudWatch**?
+- [ ] Eu tenho **réplicas de leitura** configuradas no RDS para suportar picos de tráfego?
+- [ ] Minha infraestrutura está descrita em **Terraform** ou **CDK**?
+
+Dominar esses pontos é o que separa um desenvolvedor de código de um arquiteto de soluções em nuvem.

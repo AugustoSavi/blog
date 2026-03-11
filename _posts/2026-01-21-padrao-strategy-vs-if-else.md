@@ -1,5 +1,5 @@
 ---
-title: "Padrão Strategy: Diga adeus aos 'if-else' infinitos em códigos legados"
+title: "Padrão Strategy"
 date: 2026-01-21 09:00:00 -0300
 categories: [Design Patterns, Java]
 tags: [design patterns, java]
@@ -71,6 +71,6 @@ public class PaymentService {
 
 Para evitar percorrer a lista em todo processamento, você pode criar uma `Factory` que mapeia o tipo para a estratégia em um `Map` no momento do startup da aplicação.
 
-## Conclusão
+## O Princípio da Delegação de Comportamento
 
-O padrão Strategy transforma um código frágil e difícil de manter em uma estrutura modular e profissional. Se você vê um `switch` crescendo sem parar, pare tudo e aplique uma Strategy. Seu "eu do futuro" vai te agradecer.
+A regra de ouro para um código extensível é: se você tem uma lógica que varia com base em uma condição, essa lógica não pertence ao seu serviço principal, mas sim a uma estratégia especializada. O padrão Strategy nos ensina que o papel do orquestrador é saber **quem** deve fazer o trabalho, e não **como** o trabalho deve ser feito. Ao delegar o comportamento para classes isoladas, você transforma condicionais rígidas em um sistema dinâmico e plugável.

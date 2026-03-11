@@ -33,6 +33,6 @@ O Blue-Green é fácil para código (stateless), mas difícil para o banco de da
 
 Enquanto o Blue-Green vira 100% do tráfego de uma vez, o **Canary Deployment** libera a nova versão para apenas 5% ou 10% dos usuários inicialmente, aumentando gradualmente conforme a confiança aumenta.
 
-## Conclusão
+## O Futuro das Releases: De Deploy para Release Progressivo
 
-Blue-Green Deployment traz paz de espírito para a equipe de engenharia e disponibilidade contínua para o usuário. Ele exige maturidade de infraestrutura (automação) e cuidado redobrado com migrações de banco de dados, mas o benefício de um "zero-downtime deploy" vale cada centavo do investimento.
+O Blue-Green Deployment foi o precursor de uma era onde o "dia do deploy" deixou de ser um evento traumático. Olhando para o futuro, técnicas como **Progressive Delivery** e **Feature Flags** estão tornando o ambiente Blue-Green ainda mais granular, permitindo que novas versões sejam liberadas não apenas para um ambiente inteiro, mas para segmentos específicos de usuários em tempo real. A infraestrutura está se tornando tão elástica que o conceito de "ambiente estático" desaparecerá, dando lugar a fluxos de tráfego fluidos e autorrecuperáveis.

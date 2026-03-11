@@ -1,5 +1,5 @@
 ---
-title: "Buscas Dinâmicas com CriteriaBuilder: O Fim das Queries Gigantes e Feias"
+title: "Buscas Dinâmicas com CriteriaBuilder"
 date: 2026-01-15 09:00:00 -0300
 categories: [Hibernate, JPA]
 tags: [hibernate, jpa]
@@ -58,6 +58,6 @@ Se você usa Spring Data JPA, você pode usar a interface `Specification`. Ela a
 repository.findAll(specUserId(id).and(specMinAmount(100)));
 ```
 
-## Conclusão
+## Conclusão: Em Resumo
 
-Aprender `CriteriaBuilder` é um rito de passagem para desenvolvedores Java. Ele dá o controle total sobre a construção de queries complexas sem sacrificar a manutenibilidade do código. Da próxima vez que vir um emaranhado de Strings no seu repositório, considere refatorar para Criteria!
+O `CriteriaBuilder` transforma o caos de strings concatenadas em uma estrutura de consulta modular e segura, garantindo que buscas complexas permaneçam manuteníveis e protegidas contra erros de sintaxe em tempo de execução.

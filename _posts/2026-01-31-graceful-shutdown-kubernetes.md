@@ -1,5 +1,5 @@
 ---
-title: "Graceful Shutdown no Kubernetes: Por que o seu Spring Boot gera erros no Deploy?"
+title: "Graceful Shutdown no Kubernetes"
 date: 2026-01-31 09:00:00 -0300
 categories: [DevOps, Kubernetes]
 tags: [devops, kubernetes, spring]
@@ -42,6 +42,11 @@ lifecycle:
 
 O comando `sleep 5` garante que o seu app continue "vivo" e aceitando requisições por mais 5 segundos enquanto o Kubernetes atualiza os Endpoints e remove o Pod do serviço de roteamento. Só depois desses 5 segundos é que o sinal `SIGTERM` é enviado para o Spring.
 
-## Conclusão
+## Checklist para Deploys Sem Erros
 
-Graceful Shutdown é a diferença entre um sistema resiliente e um que gera erros a cada deploy. Configure o seu Spring Boot e o seu `preStop` hook para garantir que nenhuma transação do sistema seja perdida no meio do caminho.
+Garanta que sua aplicação sobrevive ao ciclo de vida do Kubernetes validando estes pontos:
+- [ ] O Spring Boot está com `server.shutdown=graceful` ativo?
+- [ ] O `timeout-per-shutdown-phase` é compatível com o `terminationGracePeriodSeconds` do seu Pod? (O K8s deve esperar mais que o Spring).
+- [ ] Existe um `preStop` hook com `sleep` para dar tempo de a rede (Ingress/Service) se atualizar?
+- [ ] Sua aplicação trata corretamente o sinal `SIGTERM` para fechar conexões de banco e brokers?
+- [ ] Os logs confirmam que o processo terminou com sucesso (`exit 0`) após o sinal de desligamento?

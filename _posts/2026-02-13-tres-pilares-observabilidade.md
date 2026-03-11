@@ -36,6 +36,6 @@ Muitos times utilizam ferramentas modernas como o **Datadog**, que unifica esses
 
 Ao criar métricas, cuidado com a **Cardinalidade**. Tentar criar uma métrica para cada `userId` vai explodir o seu banco de métricas e custar uma fortuna. Guarde dados de alta cardinalidade (como IDs) nos Logs e Traces, e dados agregados nas Métricas.
 
-## Conclusão
+## Uma reflexão final
 
-Observabilidade não é opcional; é a lanterna que você usa para não ficar no escuro quando o sistema falha em produção. Domine os três pilares e você deixará de ser um "apagador de incêndios" para se tornar um engenheiro que prevê falhas antes que elas afetem o usuário.
+Da próxima vez que seu sistema apresentar uma lentidão intermitente em produção, pergunte-se: eu tenho os dados necessários para diagnosticar isso em 5 minutos ou vou precisar de 5 horas injetando novos logs e fazendo novos deploys? A observabilidade não é sobre o que você monitora hoje, mas sobre quais perguntas você será capaz de responder amanhã sem precisar alterar uma única linha de código.

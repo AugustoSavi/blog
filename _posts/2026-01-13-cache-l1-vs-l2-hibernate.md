@@ -1,5 +1,5 @@
 ---
-title: "Cache de 1º vs 2º Nível no Hibernate: Entenda as Diferenças de uma vez por todas!"
+title: "Cache de 1º vs 2º Nível no Hibernate"
 date: 2026-01-13 09:00:00 -0300
 categories: [Hibernate, JPA]
 tags: [hibernate, jpa]
@@ -44,6 +44,6 @@ O **L1** você já usa, querendo ou não. Ele é fundamental para que o Hibernat
 
 O **L2** deve ser usado com cautela. Ele é excelente para dados que são lidos com frequência mas mudam raramente (ex: categorias de produtos, configurações, estados/países).
 
-## Conclusão
+## Conclusão: Da Mochila ao Almoxarifado
 
-Entender essas camadas é vital para diagnosticar comportamentos estranhos (como dados "velhos" aparecendo) e para otimizar aplicações que sofrem com gargalos de banco de dados. Lembre-se: L1 é sobre **consistência da transação**, L2 é sobre **performance global**.
+Para nunca mais esquecer: o **L1 Cache** é a sua **mochila** de trilha. Ela é leve, só você tem acesso e nela você guarda o que vai usar nos próximos quilômetros (na transação atual). Já o **L2 Cache** é o **almoxarifado** da base de apoio: ele é grande, compartilhado por todos os trilheiros (threads da aplicação) e guarda suprimentos que todos usam com frequência, mas buscar algo lá exige seguir protocolos de organização (configuração e plugins) para garantir que ninguém pegue mantimentos vencidos (dados obsoletos).

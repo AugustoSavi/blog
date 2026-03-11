@@ -1,5 +1,5 @@
 ---
-title: "Hibernate Cache de 2º Nível: Escalando sua Persistência"
+title: "Hibernate Cache de 2º Nível"
 date: 2026-01-11 09:00:00 -0300
 categories: [Hibernate, JPA]
 tags: [hibernate, jpa]
@@ -53,6 +53,6 @@ public class Product { ... }
 
 O maior desafio do L2 Cache é a invalidação. Se você atualizar um dado diretamente no banco (via SQL puro), o Hibernate não saberá e continuará servindo a versão antiga que está no cache. Portanto, use L2 Cache apenas quando a maior parte das alterações nos dados passar pelo próprio Hibernate.
 
-## Conclusão
+## Takeaway Prático: Quando Ativar o L2 Cache?
 
-O Cache de 2º Nível pode reduzir drasticamente a carga no banco de dados, mas exige um design cuidadoso, especialmente em relação à concorrência e invalidação. Comece otimizando suas queries e use o cache como o próximo passo para escala.
+Antes de habilitar o Cache de 2º Nível, aplique a regra dos 80/20: identifique os 20% das tabelas que sofrem 80% das leituras e mudam raramente (como tabelas de configuração ou catálogos estáticos). Comece com a estratégia `READ_ONLY` para esses dados. Se precisar de `READ_WRITE`, garanta que **toda** alteração no banco passe pelo Hibernate; do contrário, você estará servindo fantasmas para seus usuários.

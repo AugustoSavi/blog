@@ -57,6 +57,11 @@ Uma Saga é uma sequência de transações locais. Cada transação atualiza o b
 
 Diferente do banco de dados, o Saga não garante o "I" (Isolamento) do ACID. Um usuário pode ver um pedido como "Criado" antes mesmo do estoque ser confirmado. Seu sistema precisa estar preparado para lidar com essa "Consistência Eventual".
 
-## Conclusão
+## Checklist de Design de Sagas
 
-O Saga Pattern é a ferramenta definitiva para manter a integridade dos dados em arquiteturas de microserviços. Ele troca a simplicidade do commit atômico pela resiliência e escalabilidade de um sistema distribuído coordenado por eventos.
+Ao projetar uma transação distribuída baseada em Sagas, valide estes pontos críticos:
+- [ ] Cada etapa da Saga possui uma **Transação de Compensação** (Undo) correspondente?
+- [ ] As transações de compensação são **Idempotentes**? (Elas podem ser chamadas várias vezes sem erro).
+- [ ] O sistema tolera **Consistência Eventual**? (O usuário pode ver um estado intermediário).
+- [ ] Existe um **Timeout** claro para cada etapa para disparar a compensação automaticamente?
+- [ ] Em caso de Orquestração: O Orquestrador é persistente e capaz de retomar de onde parou após um crash?

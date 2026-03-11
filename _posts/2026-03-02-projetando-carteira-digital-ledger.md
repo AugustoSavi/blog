@@ -1,5 +1,5 @@
 ---
-title: "Projetando uma Carteira Digital: Por que você deve usar Double-entry Ledger"
+title: "Projetando uma Carteira Digital"
 date: 2026-03-02 09:00:00 -0300
 categories: [Arquitetura, Fintech]
 tags: [wallet, ledger, sql, consistencia, java]
@@ -49,7 +49,7 @@ CREATE TABLE ledger_entries (
 );
 ```
 
-### 2. A Regra de Ouro: Soma Zero
+### 2. Soma Zero
 
 Para toda transação, a soma de seus `ledger_entries` deve ser **zero**.
 
@@ -97,6 +97,6 @@ public void processTransaction(UUID fromId, UUID toId, BigDecimal amount) {
 
 Nunca use `Float` ou `Double` para dinheiro. Eles são números de ponto flutuante e sofrem de erros de precisão (ex: `0.1 + 0.2 = 0.30000000000000004`). O tipo `DECIMAL` (ou `NUMERIC`) no SQL e o `BigDecimal` no Java garantem precisão exata, vital para não perder centavos em arredondamentos.
 
-## Conclusão
+## A analogia da trilha na floresta
 
-Projetar uma carteira digital não é sobre guardar um número, é sobre registrar uma história. O Double-entry Ledger traz auditoria, integridade e confiança para o sistema. Se você quer ser um engenheiro de fintech respeitado, esqueça o `balance` e comece a pensar em `ledger_entries`.
+Pense na coluna `balance` como uma placa que diz: "Você está no quilômetro 10". Se alguém vandalizar a placa, você se perde. Já o `ledger` é como as pegadas que você deixou no caminho: mesmo que a placa suma, você pode contar seus passos desde o início e saber exatamente onde está. Em sistemas financeiros, não confie em placas; confie nas pegadas que o dinheiro deixou para trás.

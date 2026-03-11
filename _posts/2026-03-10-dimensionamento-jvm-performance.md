@@ -51,11 +51,11 @@ jcmd <pid> VM.native_memory summary
 ```
 
 ### 3. Micrometer + Prometheus + Grafana
-O padrão ouro para produção. Através do Micrometer (comum no Spring Boot), você expõe métricas como `jvm.memory.used` e `jvm.gc.pause`.
+Para produção. Através do Micrometer (comum no Spring Boot), você expõe métricas como `jvm.memory.used` e `jvm.gc.pause`.
 
 ## A Fórmula Prática de Dimensionamento
 
-Uma regra de ouro para aplicações em containers (Docker/Kubernetes) é reservar cerca de **25% a 30%** da memória do container para a "Overhead" da JVM (não-heap) e o restante para o Heap.
+Para aplicações em containers (Docker/Kubernetes) é reservar cerca de **25% a 30%** da memória do container para a "Overhead" da JVM (não-heap) e o restante para o Heap.
 
 ### Exemplo de Configuração Ideal
 
@@ -95,7 +95,7 @@ No Kubernetes, utilize sempre as novas flags de percepção de container:
 
 Essas flags dizem à JVM para olhar o limite do cgroup (o limite do container) em vez da memória total do servidor físico. Definir `MaxRAMPercentage=75.0` é uma forma dinâmica e segura de garantir que o Heap nunca sufoque o restante do sistema.
 
-## Conclusão
+## Resumo em uma frase
 
-Dimensionar a JVM não é apenas configurar o `-Xmx`. É entender o consumo holístico de memória do processo Java. Comece monitorando o NMT e as métricas de Metaspace, e sempre deixe uma margem de manobra para a memória nativa. No mundo de microserviços, ser preciso no uso de recursos é a diferença entre uma infraestrutura barata e estável ou uma cheia de instabilidades inexplicáveis.
+Dominar o dimensionamento da JVM significa olhar além do Heap e entender como cada byte da memória nativa e da overhead do processo contribui para a estabilidade e performance da sua aplicação em ambientes de nuvem.
 

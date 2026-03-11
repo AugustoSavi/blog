@@ -1,5 +1,5 @@
 ---
-title: "Idempotência em APIs: Por que ela é Vital em Sistemas de Pagamento?"
+title: "Idempotência em APIs"
 date: 2026-01-19 09:00:00 -0300
 categories: [API Design, Sistemas Distribuídos]
 tags: [api design, sistemas distribuídos]
@@ -57,6 +57,6 @@ De acordo com a especificação HTTP:
 
 Você não precisa guardar as chaves para sempre. Geralmente, chaves de idempotência são mantidas por 24 a 48 horas, tempo suficiente para o cliente tentar novamente em caso de falha de rede.
 
-## Conclusão
+## O Princípio da Repetibilidade Segura
 
-Idempotência não é apenas uma "boa prática", é um requisito de segurança para qualquer API que movimenta dinheiro ou altera estados críticos. Ela traz paz de espírito para o usuário e integridade para os dados do sistema.
+Em sistemas distribuídos, uma operação só é considerada completa quando o cliente recebe a confirmação, e não apenas quando o servidor processa o dado. A regra fundamental é: **toda operação de escrita (POST) deve ser tratada como potencialmente repetida**. Implementar a idempotência através de chaves únicas geradas pelo cliente é o único contrato que garante a integridade do estado global diante da inevitável instabilidade das redes.

@@ -46,6 +46,12 @@ Se o seu teste só valida `isAdult(20)`, ele vai passar nos dois casos. O mutant
 
 O maior defeito do Mutation Testing é ser lento. Como ele precisa rodar seus testes centenas de vezes para cada mutante, o tempo de execução pode ser alto. Por isso, costumamos rodar apenas nos componentes mais críticos do sistema.
 
-## Conclusão
+## Checklist de Qualidade com Mutação
 
-Ter 100% de cobertura é fácil; ter testes que realmente matam mutantes é o que separa um código amador de um resiliente. Comece a usar o PITest e descubra quão bons seus testes realmente são.
+Antes de considerar sua tarefa concluída, passe pelo crivo dos mutantes:
+- [ ] Meus testes cobrem os valores de borda (ex: `18` em um check de `>= 18`)?
+- [ ] Se eu remover a chamada de um método secundário, algum teste falha?
+- [ ] Se eu inverter um booleano de retorno, meus assertions capturam o erro?
+- [ ] O score de mutação subiu junto com a cobertura de linhas?
+
+Se a resposta for "sim" para todos, você não tem apenas cobertura; você tem confiança.

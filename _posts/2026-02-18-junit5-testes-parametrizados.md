@@ -46,6 +46,23 @@ O JUnit 5 oferece várias formas de injetar dados:
 2.  **Cobertura:** Facilita testar "Edge Cases" (casos de borda) que você poderia esquecer se tivesse que escrever um teste completo para cada um.
 3.  **Legibilidade:** O nome do teste no relatório fica claro: `shouldValidateMerchantCategory[1] mcc=5812, category=MEAL -> true`.
 
-## Conclusão
+## Exemplo final: O poder do @MethodSource
 
-Testes parametrizados tornam sua suíte de testes mais inteligente e compacta. Em sistemas com regras complexas, eles são essenciais para garantir que todas as variações de benefícios sejam validadas sem criar um código de teste impossível de ler.
+Para fechar, imagine que você precisa validar objetos complexos. Com o `@MethodSource`, você pode passar instâncias inteiras de classes de domínio para o seu teste:
+
+```java
+static Stream<Arguments> provideTransactions() {
+    return Stream.of(
+        Arguments.of(new Transaction(100, Category.MEAL), true),
+        Arguments.of(new Transaction(5000, Category.MEAL), false) // Excedeu limite
+    );
+}
+
+@ParameterizedTest
+@MethodSource("provideTransactions")
+void testComplexTransaction(Transaction tx, boolean expected) {
+    assertEquals(expected, engine.process(tx));
+}
+```
+
+Essa flexibilidade permite que sua suíte de testes acompanhe a evolução de qualquer regra de negócio, por mais complexa que ela seja.

@@ -1,5 +1,5 @@
 ---
-title: "Para que serve o @Transactional? Muito além do Begin e Commit"
+title: "Para que serve o @Transactional?"
 date: 2026-01-16 09:00:00 -0300
 categories: [Spring Framework]
 tags: [spring framework]
@@ -45,6 +45,6 @@ public class MyService {
 ```
 *Explicação:* Como o Spring usa Proxies, o `@Transactional` só funciona quando a chamada vem de **fora** da classe. Uma chamada interna ignora o Proxy e, consequentemente, a transação.
 
-## Conclusão
+## Uma Pergunta para o Próximo Code Review
 
-O `@Transactional` é uma ferramenta poderosa de abstração, mas exige cuidado. Entender como os Proxies funcionam e como configurar a propagação corretamente é o que garante sistemas confiáveis.
+Ao colocar um `@Transactional` no topo da sua classe, você já parou para calcular o custo de manter conexões abertas em métodos que poderiam ser resolvidos com simples consultas de leitura? Estamos usando a atomicidade como um escudo para a preguiça arquitetural ou estamos realmente protegendo a integridade dos dados? O equilíbrio entre conveniência e performance é o que separa um desenvolvedor que apenas "usa o framework" de um engenheiro que domina a infraestrutura.

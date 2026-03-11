@@ -78,6 +78,6 @@ Não basta apenas checar se a chave existe. Em sistemas de alta concorrência, d
 
 A idempotência também é fundamental em **Consumidores de Mensagens (Kafka/RabbitMQ)**. Como o Kafka garante a entrega *at-least-once*, seu consumidor pode receber a mesma mensagem duas vezes. A lógica de "Check-and-Insert" usando o ID da mensagem como chave de idempotência é o que evita o processamento duplicado.
 
-## Conclusão
+## Uma reflexão final
 
-Implementar idempotência não é apenas uma "boa prática", é um requisito de sobrevivência para qualquer sistema que lide com transações críticas. Ela traz paz para o desenvolvedor e confiança para o usuário final. Se você está construindo uma API que altera estado, pergunte-se hoje: "O que acontece se eu receber esta requisição duas vezes?".
+Na próxima vez que você estiver desenhando um novo endpoint que altera o estado do sistema, pare um segundo e pergunte-se: "Se o cliente enviar esta requisição e minha resposta se perder no caminho, o que acontecerá quando ele tentar novamente?". Se a resposta envolver duplicidade de dados ou inconsistência financeira, seu trabalho ainda não terminou. A idempotência é a rede de segurança que permite que sistemas imperfeitos operem de forma perfeita.

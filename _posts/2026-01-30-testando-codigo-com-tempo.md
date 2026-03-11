@@ -1,5 +1,5 @@
 ---
-title: "Como testar código que depende do Tempo (sem ficar maluco)"
+title: "Testando código que depende do Tempo"
 date: 2026-01-30 09:00:00 -0300
 categories: [Java, Testes]
 tags: [java, testes]
@@ -72,6 +72,6 @@ void shouldApplyDiscountAfter18h() {
 
 Quase todas as linguagens modernas seguem esse padrão. No mundo Node/JS, usamos bibliotecas como `sinon` para fazer o "fake timers". No Go, passamos uma interface de `TimeProvider`.
 
-## Conclusão
+## Conclusão: Lições de um "Bate-Relógio"
 
-Nunca dependa do relógio do sistema diretamente. Ao injetar o `Clock`, você ganha o controle total sobre a quarta dimensão e garante que seus testes sejam rápidos, confiáveis e independentes do momento em que são executados.
+No início da minha carreira, passei uma madrugada inteira tentando entender por que um teste de integração de agendamento financeiro só falhava no servidor de CI às segundas-feiras. O culpado? O fuso horário do servidor e o uso direto de `Instant.now()`. Aquele incidente me ensinou que o tempo é uma dependência externa tão crítica quanto um banco de dados ou uma API. Hoje, não escrevo uma linha de lógica temporal sem injetar um `Clock`. O controle sobre o tempo é, literalmente, a diferença entre um código que "parece funcionar" e um código que é matematicamente previsível.

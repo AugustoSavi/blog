@@ -1,5 +1,5 @@
 ---
-title: "Mock, Stub ou Spy? Pare de confundir os termos nos seus testes!"
+title: "Mock, Stub ou Spy"
 date: 2026-01-29 09:00:00 -0300
 categories: [Testes, Mockito]
 tags: [testes, mockito]
@@ -53,6 +53,6 @@ assertEquals(1, spyList.size()); // Comportamento real mantido
 - Use **Mock** quando a ação principal do seu código é chamar um serviço externo (ex: enviar um SMS) e você quer garantir que isso aconteceu.
 - Use **Spy** com cautela, geralmente em códigos legados onde você não consegue isolar totalmente as classes.
 
-## Conclusão
+## Conclusão: Em Resumo
 
-Saber a diferença teórica ajuda a escrever testes mais claros e a se comunicar melhor com sua equipe. Lembre-se: **Stubs respondem, Mocks verificam.**
+Entender a diferença entre Mocks, Stubs e Spies permite que você escolha a ferramenta certa para cada cenário de teste, garantindo que suas validações sejam focadas, legíveis e, acima de tudo, eficazes na detecção de regressões reais.

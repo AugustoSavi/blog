@@ -1,5 +1,5 @@
 ---
-title: "Circuit Breaker: Proteja seu sistema de falhas em cascata"
+title: "Circuit Breaker"
 date: 2026-01-24 09:00:00 -0300
 categories: [Resiliência, Microserviços]
 tags: [resiliencia, microservicos]
@@ -9,7 +9,7 @@ mermaid: true
 
 Em uma arquitetura de microserviços, as falhas são inevitáveis. Uma API lenta ou um banco de dados fora do ar podem gerar um efeito dominó que derruba todo o seu ecossistema. O **Circuit Breaker** (Disjuntor) é a proteção que evita que uma pequena falha se torne um desastre total.
 
-## O Gancho: A Analogia do Disjuntor Elétrico
+## A Analogia do Disjuntor Elétrico
 
 Na sua casa, o disjuntor desarma quando há uma sobrecarga, protegendo os seus aparelhos. No software, o Circuit Breaker interrompe chamadas a um serviço que está falhando, protegendo o seu sistema de ficar travado esperando respostas que não virão.
 
@@ -54,6 +54,11 @@ public PaymentResponse fallbackPayment(PaymentRequest request, Throwable t) {
 
 Combine o Circuit Breaker com o padrão **Bulkhead**. Enquanto o disjuntor para as chamadas, o Bulkhead isola os pools de threads para que a falha em um serviço de "E-mail" não consuma todas as threads do serviço de "Checkout".
 
-## Conclusão
+## Checklist de Configuração do Disjuntor
 
-Circuit Breaker não é opcional em sistemas distribuídos modernos. Ele é a diferença entre um sistema que "manca" mas continua vivo e um sistema que sofre uma parada total por causa de uma dependência instável.
+Ao implementar o Circuit Breaker com Resilience4j ou similar, verifique estes parâmetros críticos:
+- [ ] **Failure Rate Threshold:** Qual a porcentagem de erro aceitável antes de abrir o circuito? (Geralmente 50%).
+- [ ] **Wait Duration in Open State:** Quanto tempo o sistema deve esperar antes de tentar o estado `HALF_OPEN`?
+- [ ] **Sliding Window Size:** Quantas requisições serão analisadas para calcular a taxa de erro?
+- [ ] **Permitted Number of Calls in Half-Open:** Quantos testes são suficientes para decidir fechar o circuito novamente?
+- [ ] **Fallback Method:** Existe uma resposta padrão (cache ou erro amigável) para quando o serviço estiver fora do ar?

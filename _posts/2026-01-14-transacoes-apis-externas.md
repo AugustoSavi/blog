@@ -1,5 +1,5 @@
 ---
-title: "Transações e APIs Externas: O Erro de 1 Milhão de Reais que você deve evitar"
+title: "Transações e APIs Externas"
 date: 2026-01-14 09:00:00 -0300
 categories: [Java, Spring]
 tags: [java, spring]
@@ -16,7 +16,6 @@ O problema não é funcional, é de infraestrutura. Quando você entra em um mé
 
 Se a sua API externa demorar 10 segundos para responder (por lentidão na rede ou no parceiro), aquela conexão do banco ficará **parada, sem fazer nada**, por 10 segundos. Se você tiver 100 requisições simultâneas fazendo isso e seu pool tiver 100 conexões, seu sistema inteiro para. Ninguém mais consegue fazer nem um `SELECT` simples, porque todas as conexões estão "sequestradas" esperando a API externa.
 
-## A Regra de Ouro
 
 **Nunca, jamais, mantenha uma transação de banco aberta durante uma chamada de rede lenta.**
 
@@ -53,6 +52,11 @@ Se a API externa der OK mas você não conseguir atualizar o banco no passo 3, v
 - **Idempotência:** A API externa deve permitir que você consulte o status ou tente novamente sem cobrar duas vezes.
 - **Job de Reconciliação:** Um processo que roda em background procurando por registros que ficaram "PENDING" por muito tempo e verifica o status real na API externa.
 
-## Conclusão
+## Checklist Anti-Sequestro de Conexões
 
-Arquitetura de sistemas distribuídos exige que pensemos além do código. Proteger seu pool de conexões é proteger a disponibilidade do seu serviço. Tire as APIs externas do seu `@Transactional` hoje mesmo!
+Ao implementar integrações, valide se o seu código não está cometendo estes erros:
+- [ ] Existe alguma chamada `restTemplate.exchange()` ou `feignClient` dentro de um método `@Transactional`?
+- [ ] O timeout da API externa é menor que o timeout da transação do banco?
+- [ ] O fluxo principal está dividido em: Iniciar (DB) -> Chamar (Rede) -> Finalizar (DB)?
+- [ ] Existe um mecanismo de "retry" ou "fallback" para tratar falhas no passo final de atualização?
+- [ ] O pool de conexões (HikariCP) está monitorado para detectar picos de uso durante latências de rede?

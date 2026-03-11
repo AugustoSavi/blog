@@ -35,6 +35,6 @@ Em vez de dizer "Isso está errado", tente:
 
 Um desenvolvedor deve estar preparado para ter seu próprio código revisado por desenvolvedor Sênior, Pleno ou Junior. A humildade técnica é o que constrói uma cultura de engenharia forte.
 
-## Conclusão
+## O que aprendi revisando código
 
-Code Review é sobre **propriedade coletiva do código**. Quando você aprova um PR, você também se torna responsável por aquele código. Use essa etapa para garantir que o seu sistema continue escalável, seguro e fácil de manter por qualquer pessoa do time.
+Ao longo dos anos, percebi que os melhores revisores não são os que encontram mais bugs, mas os que fazem as melhores perguntas. Aprendi que um "Por que você escolheu este caminho?" abre muito mais espaço para o crescimento do time do que um "Isso deveria ser feito de outra forma". O Code Review é, acima de tudo, um exercício de empatia e comunicação técnica, onde o código é apenas o pretexto para construirmos engenheiros melhores.

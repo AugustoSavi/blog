@@ -31,6 +31,6 @@ Em sistemas distribuídos na nuvem, falhas de rede (**Partitions**) **vão acont
 
 O CAP só fala o que acontece quando há falha. O **PACELC** estende isso para o estado normal: "Se houver partição (P), escolha entre A e C. Senão (E), escolha entre Latência (L) e Consistência (C)".
 
-## Conclusão
+## Uma Pergunta para o Próximo Incidente de Rede
 
-Não existe banco de dados perfeito. Entender o Teorema CAP é o que permite escolher a tecnologia certa baseada no risco de negócio. Em sistemas financeiros, a Consistência costuma pesar mais, mas a Disponibilidade é o que mantém o cliente satisfeito na fila do café.
+Quando o seu monitoramento indicar uma partição de rede entre os seus data centers, qual será a sua prioridade: manter a integridade absoluta dos saldos dos clientes (Consistência) ou garantir que eles ainda consigam realizar compras emergenciais, mesmo com risco de saldo negativo temporário (Disponibilidade)? O Teorema CAP não é um problema a ser resolvido, mas uma realidade a ser aceita. Você já definiu com o seu Product Owner qual é o "preço da perfeição" para o seu negócio?

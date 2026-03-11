@@ -41,6 +41,6 @@ O nível final. Sua API não retorna apenas dados, ela retorna **links** para as
 }
 ```
 
-## Conclusão
+## Insight Final: O Valor da Maturidade
 
-Mirar no Nível 2 é o requisito básico. O Nível 3 (HATEOAS) é o ideal acadêmico, mas muitas vezes evitado pela complexidade de implementação no lado do cliente. O importante é sair do Nível 0 e dar semântica real às suas URIs e verbos.
+O Modelo de Richardson não é apenas uma escada acadêmica; é um guia de design para sistemas desacoplados. Enquanto o Nível 2 nos dá a semântica necessária para previsibilidade, o Nível 3 (HATEOAS) oferece a promessa de uma API autoexplicativa que reduz drasticamente o acoplamento entre cliente e servidor. No entanto, o verdadeiro "sucesso" de uma API não é atingir a Glória do REST, mas sim prover um contrato estável, documentado e que resolva o problema do negócio com a menor fricção possível para o desenvolvedor.

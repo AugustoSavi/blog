@@ -82,6 +82,6 @@ Sim, é possível, mas cuidado! Criar camadas excessivas de views pode tornar o 
 - **Relatórios:** Centralize cálculos de impostos ou KPIs financeiros.
 - **Multi-tenancy:** Crie views que filtrem dados por `tenant_id` automaticamente para usuários específicos.
 
-## Conclusão
+## O Princípio do Contrato de Dados
 
-Views não são apenas "atalhos". Elas são ferramentas de design de banco de dados que promovem o desacoplamento entre a estrutura física dos dados e a forma como a aplicação os consome. Se você quer um banco de dados limpo e seguro, comece a esconder sua complexidade atrás de boas Views.
+A regra de ouro ao trabalhar com bancos de dados é: **nunca exponha sua estrutura física diretamente se você pode fornecer uma abstração lógica.** As Views agem como esse contrato de dados estável. Ao utilizá-las, você ganha a liberdade de refatorar suas tabelas internas para ganhar performance ou organização, mantendo a interface da aplicação intacta e protegida contra mudanças estruturais dolorosas.

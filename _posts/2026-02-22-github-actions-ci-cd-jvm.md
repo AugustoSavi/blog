@@ -53,6 +53,6 @@ jobs:
 
 Você pode testar sua aplicação em múltiplas versões do Java (ex: 17 e 21) ou múltiplos Sistemas Operacionais simultaneamente usando a funcionalidade de `matrix` do GitHub Actions.
 
-## Conclusão
+## O mantra da automação
 
-GitHub Actions transforma o seu repositório em um organismo vivo. Dominar essa ferramenta permite que você tenha autonomia total sobre o ciclo de entrega, garantindo que o deploy seja um evento chato e previsível, e não um momento de tensão.
+Como diz a máxima do *Continuous Delivery*: "Se dói, faça mais vezes e automatize". O GitHub Actions é a ferramenta que permite transformar essa dor em um processo invisível e confiável. Ao investir tempo na automação do seu pipeline JVM, você não está apenas economizando minutos de build, mas protegendo a integridade do produto e a sanidade mental de quem o constrói.

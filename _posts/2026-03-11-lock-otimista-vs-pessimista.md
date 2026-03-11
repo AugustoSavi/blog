@@ -134,6 +134,6 @@ No PostgreSQL, o `FOR UPDATE` não bloqueia apenas o `UPDATE`, mas também outro
 | **Complexidade** | Simples de entender | Exige tratamento de exceção |
 | **Ideal para** | Alta contenção | Baixa contenção |
 
-## Conclusão
+## Além do Banco de Dados
 
-Não existe uma bala de prata. O **Lock Otimista** é a escolha padrão para a maioria das aplicações web modernas por ser mais performático e escalável. Reserve o **Lock Pessimista** para casos específicos de altíssima criticidade onde o conflito é a regra, não a exceção. Dominar esses dois conceitos é fundamental para construir sistemas robustos que não perdem dados no meio do caminho.
+Entender o controle de concorrência no nível do banco de dados é apenas o primeiro passo. Em arquiteturas distribuídas, muitas vezes precisamos estender esses conceitos para além de uma única instância de banco, utilizando **Locks Distribuídos** com Redis ou Zookeeper. No próximo post, exploraremos como garantir a consistência de dados quando seu sistema atravessa múltiplos microserviços e regiões geográficas.

@@ -66,6 +66,6 @@ public void process() {
 
 As JVMs modernas são inteligentes. Se o JIT Compiler perceber que um objeto criado dentro de um método nunca "escapa" dele (ou seja, não é retornado nem passado para outras threads), ele pode decidir alocar esse objeto diretamente na **Stack**! Isso é chamado de *Scalar Replacement*, e evita o overhead do Garbage Collector.
 
-## Conclusão
+## Conclusão: O Escritório e o Depósito
 
-Entender a diferença entre Stack e Heap é fundamental para debugar erros (OOM vs StackOverflow) e escrever código mais eficiente. Lembre-se: Stack é sobre **execução** e Heap é sobre **dados**.
+Pense na **Stack** como a mesa de trabalho de cada funcionário (thread): nela, os itens estão ao alcance da mão e são organizados rapidamente conforme a tarefa atual, mas o espaço é limitado. Já o **Heap** é o grande depósito central da empresa: lá guardamos tudo o que é grande ou que precisa ser compartilhado entre vários funcionários, mas buscar algo lá exige caminhar um pouco mais e, eventualmente, precisamos de uma equipe de limpeza (Garbage Collector) para descartar o que ninguém mais usa.

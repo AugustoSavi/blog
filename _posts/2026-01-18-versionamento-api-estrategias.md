@@ -1,5 +1,5 @@
 ---
-title: "Versionamento de APIs: URL vs Header e a Arte de não Quebrar o Cliente"
+title: "Versionamento de APIs"
 date: 2026-01-18 09:00:00 -0300
 categories: [API Design]
 tags: [api design]
@@ -50,6 +50,6 @@ Antes de criar uma nova versão, pergunte-se: "Posso fazer isso de forma retroco
 - Adicionar campos novos no JSON geralmente não quebra os clientes (se eles forem bem escritos).
 - Mudar o nome de um campo ou o tipo de dado **sempre** quebra.
 
-## Conclusão
+## Takeaway Prático: A Escolha Segura
 
-Na dúvida, o **Versionamento na URL** é a escolha pragmática que evita problemas de cache e facilita a vida do desenvolvedor que consome sua API. O importante é ter uma estratégia clara e respeitar sempre o contrato com seu cliente.
+Se você está começando um projeto novo e não quer perder tempo com configurações complexas de cache e negociação de conteúdo, **vá de versionamento na URL (`/v1/`)**. É a estratégia que oferece a melhor relação entre visibilidade, facilidade de depuração e compatibilidade com ferramentas de mercado. Reserve o versionamento por Header apenas para APIs internas ou cenários onde a estética da URL é um requisito de design inegociável.

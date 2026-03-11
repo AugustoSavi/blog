@@ -1,5 +1,5 @@
 ---
-title: "Caos nos Microserviços: Como domar 50 serviços com Service Mesh e Resiliência"
+title: "Service Mesh e Resiliência"
 date: 2026-01-27 09:00:00 -0300
 categories: [Arquitetura Distribuída, Service Mesh]
 tags: [arquitetura distribuída, service mesh]
@@ -39,6 +39,6 @@ Nunca use o timeout padrão (geralmente infinito ou muito longo). Cada chamada d
 2.  **Implemente Saúde (Health Checks):** O Kubernetes precisa saber quando matar uma instância que parou de responder.
 3.  **Adote um Service Mesh:** Se a complexidade de rede está te consumindo, deixe que a infraestrutura resolva o roteamento e a resiliência.
 
-## Conclusão
+## Conclusão: A Falha como Certeza
 
-Escalar de 5 para 50 microserviços não é apenas "fazer mais do mesmo". Exige uma mudança de mentalidade onde a resiliência e a observabilidade são tão importantes quanto a lógica de negócio. Não deixe que a rede seja o seu ponto único de falha.
+Como Werner Vogels, CTO da Amazon, famosamente disse: "Everything fails, all the time". Em uma arquitetura de 50 ou 500 microserviços, a questão não é *se* um componente vai falhar, mas quão bem o restante do ecossistema vai isolar essa falha. Adotar Service Mesh e padrões de resiliência não é um luxo tecnológico, é a implementação prática da filosofia de que o design do sistema deve ser orientado à sobrevivência em um ambiente inerentemente hostil e imprevisível.

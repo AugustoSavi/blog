@@ -1,5 +1,5 @@
 ---
-title: "O Problema do N+1: Como uma query inofensiva destrói sua performance"
+title: "O Problema do N+1"
 date: 2026-02-05 09:00:00 -0300
 categories: [Hibernate, JPA]
 tags: [hibernate, jpa]
@@ -47,6 +47,6 @@ Isso faz a mesma coisa: força o carregamento imediato (Eager) apenas para essa 
 
 Porque se ele fizesse JOIN em tudo por padrão, você acabaria trazendo o banco de dados inteiro para a memória em uma consulta simples. O `Lazy Loading` é uma proteção, mas exige que o desenvolvedor saiba quando "quebrar" essa proteção para otimizar a performance.
 
-## Conclusão
+## O Princípio da Consulta Única
 
-Sempre monitore o SQL gerado pela sua aplicação em desenvolvimento. Se você vir o mesmo `SELECT` se repetindo centenas de vezes com IDs diferentes, você encontrou o N+1. Use `JOIN FETCH` ou `EntityGraph` e seu banco de dados (e o seu usuário) vão te agradecer.
+A regra de ouro para a persistência eficiente é: nunca execute consultas ao banco de dados dentro de um laço de repetição. O custo de latência de rede e processamento de múltiplas viagens ao banco (round-trips) é ordens de grandeza superior ao custo de um `JOIN` bem estruturado. Se o seu código precisa de dados relacionados para N entidades, sua responsabilidade como engenheiro é garantir que those dados sejam carregados de forma atômica e antecipada através de `JOIN FETCH` ou `EntityGraph`.

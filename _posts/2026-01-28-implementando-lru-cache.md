@@ -9,7 +9,7 @@ mermaid: true
 
 O cache é fundamental para performance, mas a memória é finita. Como decidir qual item remover quando o cache está lotado? O algoritmo mais popular é o **LRU (Least Recently Used)**: removemos o item que não é acessado há mais tempo. Vamos implementar um do zero!
 
-## O Gancho: Velocidade de O(1)
+## Velocidade de O(1)
 
 Um bom cache precisa ser rápido. Tanto a inserção quanto a busca devem ser, idealmente, **O(1)**. Para isso, precisamos de uma combinação de duas estruturas de dados:
 1.  **HashMap:** Para busca rápida pelo ID.
@@ -86,6 +86,17 @@ O `Deque` (Double Ended Queue) permite adicionar e remover itens de ambas as pon
 - **Sistemas Operacionais:** No gerenciamento de páginas de memória virtual.
 - **Bancos de Dados:** No cache de páginas de disco (Buffer Pool).
 
-## Conclusão
+## Exemplo Final: LRU em 3 Linhas com Java
 
-Implementar um LRU Cache é um excelente exercício para entender como combinar estruturas de dados para resolver problemas de performance. Se você quer algo pronto e performático em Java, use o `LinkedHashMap` com o construtor de `accessOrder` ou bibliotecas como o **Caffeine Cache**.
+Se você não precisa reinventar a roda e quer apenas um cache LRU funcional e rápido para o seu projeto Java, o segredo está no `LinkedHashMap`. Veja como o próprio JDK resolve isso de forma elegante:
+
+```java
+// Um cache LRU de 100 elementos pronto para uso
+Map<String, Object> cache = new LinkedHashMap<>(100, 0.75f, true) {
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<String, Object> eldest) {
+        return size() > 100; // Define o limite de despejo
+    }
+};
+```
+Esta implementação nativa utiliza o parâmetro `accessOrder=true` para reorganizar os nós internamente a cada acesso, provendo um comportamento LRU perfeito com o mínimo de código.

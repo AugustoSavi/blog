@@ -79,6 +79,6 @@ Durante o dia do benefício, é normal que o Kafka tenha milhões de mensagens a
 
 O Kafka tem uma característica genial: ele é baseado em **Pull**. O consumidor decide o ritmo de leitura. Se o banco de dados começar a ficar lento (CPU em 90%), o consumidor diminui a velocidade de processamento automaticCajuamente para não "afogar" o banco. Isso é o **Backpressure nativo**.
 
-## Conclusão
+## O mantra da escalabilidade
 
-Processar créditos em massa é a prova de fogo de qualquer arquiteto de software. Ao sair do modelo síncrono e adotar o Kafka com consumidores idempotentes e processamento batch, você transforma uma operação de risco em um processo escalável e resiliente. O usuário recebe o crédito rápido, e o banco de dados dorme tranquilo.
+Como bem disse Martin Kleppmann em *Designing Data-Intensive Applications*: "Onde há um gargalo, há uma oportunidade para o desacoplamento". Ao transformar um processamento de crédito síncrono em um fluxo assíncrono baseado em Kafka, você não está apenas resolvendo um problema técnico, mas construindo um sistema que respeita os limites físicos da sua infraestrutura e garante a integridade dos dados, independentemente do volume de carga.

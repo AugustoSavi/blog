@@ -1,5 +1,5 @@
 ---
-title: "Socorro! O OutOfMemoryError bateu na porta: Como agir em produção?"
+title: "OutOfMemoryError"
 date: 2026-01-01 09:00:00 -0300
 categories: [Java, JVM]
 tags: [java, jvm]
@@ -18,7 +18,7 @@ Para resolver um OOM, você precisa de dados. Aqui estão as ferramentas essenci
 
 1.  **Heap Dump:** Um "instantâneo" da memória no momento da falha.
 2.  **VisualVM / JVisualVM:** Para análise em tempo real (em ambientes de dev/staging).
-3.  **Eclipse MAT (Memory Analyzer Tool):** A ferramenta padrão ouro para analisar Heap Dumps e encontrar "vazadores" de memória.
+3.  **Eclipse MAT (Memory Analyzer Tool):** A ferramenta para analisar Heap Dumps e encontrar "vazadores" de memória.
 4.  **JProfiler / YourKit:** Ferramentas comerciais poderosas para análise profunda.
 5.  **Datadog / New Relic / Prometheus:** Para monitorar tendências de consumo de memória antes da explosão.
 
@@ -47,6 +47,11 @@ Existem vários tipos de `OutOfMemoryError`:
 - **GC Overhead limit exceeded:** O GC está gastando 98% do tempo para liberar menos de 2% da memória (está "patinando").
 - **Metaspace:** Memória nativa usada para metadados de classes (comum em deploys excessivos sem reiniciar a JVM).
 
-## Conclusão
+## Checklist de Sobrevivência ao OOM
 
-Lidar com OOM em produção exige antecipação de configurações e as ferramentas certas. Configure o `HeapDumpOnOutOfMemoryError` hoje mesmo e pare de tentar adivinhar por que sua aplicação está morrendo.
+Antes de considerar o incidente encerrado, certifique-se de que sua infraestrutura segue estes pontos:
+- [ ] `-XX:+HeapDumpOnOutOfMemoryError` está ativo em todos os ambientes críticos.
+- [ ] O volume de logs/dumps possui espaço em disco suficiente para o tamanho do Heap.
+- [ ] Existe monitoramento de métricas de JVM (Heap, Metaspace, GC) com alertas de tendência.
+- [ ] A equipe sabe operar o Eclipse MAT ou similar para análise post-mortem.
+- [ ] O limite de memória do container (K8s/Docker) é superior ao `-Xmx` para evitar OOM Kill do SO.

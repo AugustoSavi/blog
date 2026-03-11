@@ -1,5 +1,5 @@
 ---
-title: "Reflexão no Java: O Superpoder (e o Perigo) de Olhar no Espelho"
+title: "Reflexão no Java"
 date: 2026-01-08 09:00:00 -0300
 categories: [Java]
 tags: [java]
@@ -62,6 +62,6 @@ Sem a reflexão, você teria que escrever um código manual de mapeamento para c
 
 Chamadas via reflexão podem ser de 2 a 10 vezes mais lentas que chamadas diretas. Por isso, frameworks modernos como o **Micronaut** evitam a reflexão, fazendo todo esse trabalho em tempo de compilação usando processadores de anotação.
 
-## Conclusão
+## Conclusão: O Limiar da Abstração
 
-Reflexão é a base dos frameworks que amamos, mas deve ser usada com extrema cautela em código de negócio. Se você pode resolver um problema com interfaces e polimorfismo, prefira sempre o caminho tradicional. Guarde a reflexão para quando você estiver construindo ferramentas genéricas.
+Como bem pontuou Brian Goetz, arquiteto da linguagem Java, a reflexão é uma ferramenta para escritores de frameworks, não para escritores de aplicações. Ela permite que criemos sistemas incrivelmente flexíveis e "mágicos", mas ao custo da transparência e da verificação estática do compilador. Ao utilizar `java.lang.reflect`, lembre-se: você está trocando a segurança do tempo de compilação pela liberdade do tempo de execução. Use com parcimônia.

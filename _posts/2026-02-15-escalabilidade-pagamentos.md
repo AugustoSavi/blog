@@ -14,7 +14,7 @@ Em sistemas financeiros, o tráfego é altamente previsível mas brutal. No dia 
 
 ## Estratégia 1: Desacoplamento com Mensageria
 
-A regra de ouro: **Nunca processe o crédito de benefício de forma síncrona na requisição HTTP.**
+**Nunca processe o crédito de benefício de forma síncrona na requisição HTTP.**
 - O cliente (RH da empresa) envia o arquivo/solicitação.
 - O sistema valida o formato, salva o arquivo no S3 e coloca uma mensagem no Kafka: "Processar Lote X".
 - O cliente recebe um `202 Accepted` imediatamente.
@@ -38,6 +38,6 @@ Se o sistema começar a degradar, proteja-se.
 - Use **Rate Limiting** no API Gateway para evitar que um único cliente sobrecarregue o sistema.
 - Use **Backpressure** nos seus consumidores Kafka: se o banco estiver lento, o consumidor deve diminuir o ritmo de leitura automaticamente.
 
-## Conclusão
+## Insight final
 
-Escalabilidade em pagamentos é sobre **gerenciamento de filas** e **proteção de recursos finitos** (como conexões de banco). Um engenheiro deve projetar sistemas que falham graciosamente e que processam grandes volumes de forma resiliente, garantindo que o cartão do usuário passe, não importa quão cheia esteja a rede.
+A verdadeira escalabilidade em sistemas de pagamento não é apenas sobre suportar mais requisições por segundo, mas sobre quão bem o seu sistema sobrevive quando as coisas dão errado. Em um cenário de carga extrema, é preferível que um processamento de lote demore 10 minutos a mais do que deixar o banco de dados central indisponível para transações de cartão em tempo real. Priorize sempre a disponibilidade do fluxo crítico sobre a velocidade do fluxo secundário.

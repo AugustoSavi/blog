@@ -35,6 +35,6 @@ Porque é o equilíbrio perfeito entre performance e segurança. No entanto, ele
 
 Quando você usa `acks=all`, o Kafka espera que **todas** as réplicas sincronizadas confirmem o recebimento. Isso traz uma segurança incrível contra perda de dados, mas aumenta a latência da sua aplicação.
 
-## Conclusão
+## Takeaway prático
 
-Escolher a garantia de entrega errada pode gerar inconsistências silenciosas no seu sistema. Saiba quando você pode perder dados e quando você deve estar preparado para lidar com duplicatas.
+Para a maioria dos sistemas de mensageria, a configuração ideal segue a regra de ouro: utilize `acks=all` com `min.insync.replicas=2` no produtor para garantir durabilidade, e implemente lógica de **idempotência** no consumidor. Essa combinação oferece o melhor equilíbrio entre segurança contra perda de dados e resiliência a falhas de rede, sem a complexidade extrema das transações exatamente-uma-vez.

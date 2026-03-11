@@ -9,7 +9,7 @@ mermaid: true
 
 Você já sentiu que seu código está "preso" ao framework? Que trocar o Spring pelo Micronaut ou o MySQL pelo DynamoDB seria um pesadelo? A **Arquitetura Hexagonal (ou Ports & Adapters)** resolve isso separando o que é "negócio" do que é "ferramenta".
 
-## O Gancho: O Core é Sagrado
+## O Core é Sagrado
 
 Na Arquitetura Hexagonal, o centro (Core) contém as regras de negócio puras. Ele não sabe o que é um Banco de Dados, o que é um Controller REST ou o que é o Kafka. Ele apenas expõe e consome interfaces (**Ports**).
 
@@ -100,6 +100,6 @@ public class JpaAccountAdapter implements AccountRepository { // Implementa o PO
 2.  **Longevidade:** O framework pode evoluir ou mudar, mas as regras de negócio (ex: como calcular benefícios) continuam intactas no Core.
 3.  **Foco:** O desenvolvedor foca no problema de negócio antes de se preocupar com a tabela do banco.
 
-## Conclusão
+## Insight Final: O Hexágono como Proteção de Investimento
 
-Estruturar pastas não é apenas estética, é design de software. A Arquitetura Hexagonal traz clareza sobre onde cada coisa deve morar e protege o seu ativo mais valioso: a lógica de negócio.
+A Arquitetura Hexagonal não é sobre criar mais pastas ou interfaces, é sobre proteger o seu investimento intelectual. Frameworks, bancos de dados e protocolos de comunicação são tecnologias transitórias que mudam a cada 5 ou 10 anos. Já as regras de negócio do seu domínio são o que realmente gera valor. Ao isolar o "Core" do mundo externo, você garante que sua aplicação possa evoluir tecnologicamente sem precisar ser reescrita do zero a cada mudança de tendência do mercado.

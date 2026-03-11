@@ -47,6 +47,11 @@ Se você tem um objeto `Detached` e quer que ele volte a ser `Managed`, você us
 
 Muitos erros de "entidade não salva" acontecem porque o desenvolvedor está alterando um objeto que já está no estado `Detached`. Outro erro comum é carregar milhares de objetos como `Managed` desnecessariamente, consumindo muita memória do "vigia" (Persistence Context).
 
-## Conclusão
+## Checklist de Estados da Entidade
 
-Dominar o ciclo de vida das entidades é fundamental para trabalhar com JPA de forma eficiente. Lembre-se: o Hibernate só faz a mágica dele enquanto o objeto está sob o olhar atento do `EntityManager` no estado `Managed`.
+Sempre que uma entidade não se comportar como esperado, valide estes pontos:
+- [ ] O objeto foi criado com `new`? (Estado: **Transient** - chame `persist` ou `save`).
+- [ ] O método está dentro de um `@Transactional` ativo? (Estado: **Managed** - o Dirty Checking funcionará).
+- [ ] A sessão foi fechada ou o objeto veio de um cache externo? (Estado: **Detached** - use `merge`).
+- [ ] Você chamou `repository.delete()`? (Estado: **Removed** - o objeto ainda existe na memória até o flush).
+- [ ] O ID da entidade já está preenchido antes de salvar? (Pode causar um `merge` inesperado em vez de `persist`).

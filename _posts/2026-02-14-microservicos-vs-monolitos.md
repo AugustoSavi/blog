@@ -32,6 +32,6 @@ Antes de pular para microserviços, considere o **Monólito Modular**. Divida se
 2.  **Requisitos Técnicos Diferentes:** Um módulo precisa de Python para IA e o resto é Java.
 3.  **Escala de Recursos:** Um módulo consome 90% da CPU e você quer escalá-lo sem pagar por 10 cópias do sistema inteiro.
 
-## Conclusão
+## O Princípio da Extração Justificada
 
-Microserviços são uma solução para **problemas de escala de organização**, não apenas problemas técnicos. Em empresas em crescimento, a escala justifica o uso de microserviços, mas para muitos MVPs, um monólito bem estruturado ainda é a escolha mais inteligente e econômica.
+Nunca comece um projeto com microserviços se você pode começar com um monólito modular. A regra de ouro é: **extraia apenas quando a dor da coordenação ou a necessidade de escala técnica superar a dor da complexidade de rede.** Se você não consegue organizar seus pacotes dentro de um único projeto, dificilmente conseguirá organizar centenas de serviços espalhados pela infraestrutura.

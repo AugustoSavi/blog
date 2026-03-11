@@ -42,6 +42,6 @@ runtime.run(creditBenefit)
 
 Embora o nome assuste, uma **Monad** (como o ZIO) é apenas um padrão de design que permite encadear operações mantendo o contexto. Se você usa `Optional` ou `Stream` no Java, você já usa monads sem saber!
 
-## Conclusão
+## Uma Provocação sobre Honestidade no Código
 
-A programação funcional com ZIO traz uma previsibilidade incrível para sistemas críticos. Ela transforma o "caos" de chamadas assíncronas em uma pipeline clara, segura e fácil de testar. A adoção de Scala/ZIO demonstra um compromisso com a integridade dos dados e a resiliência a sério.
+Se as suas funções Java ou Kotlin pudessem falar, elas diriam toda a verdade sobre o que fazem "por baixo dos panos"? Quantas vezes um simples retorno de `List<String>` esconde um potencial erro de rede ou um estouro de memória? Migrar para um modelo orientado a efeitos como o ZIO não é apenas uma escolha sintática, é um compromisso com a transparência arquitetural. Estamos prontos para admitir que todo código de produção é, na verdade, uma gestão complexa de falhas e dependências externas?

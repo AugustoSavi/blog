@@ -1,5 +1,5 @@
 ---
-title: "Paginação: Cursor-based vs Page-based. Qual escolher para sua API?"
+title: "Cursor-based vs Page-based"
 date: 2026-01-22 09:00:00 -0300
 categories: [API Design, Banco de Dados]
 tags: [api design, banco de dados]
@@ -45,6 +45,6 @@ SQL: `SELECT * FROM orders WHERE id > 'A123' LIMIT 20`
 - **Use Page-based** se o seu dataset é pequeno (milhares de registros) ou se o usuário realmente precisa saltar entre páginas (ex: um painel administrativo).
 - **Use Cursor-based** para sistemas de alta escala, feeds de redes sociais, logs ou qualquer lista que cresça indefinidamente.
 
-## Conclusão
+## Takeaway Prático: Offset ou Cursor?
 
-Paginação não é apenas sobre dividir dados, é sobre performance de banco de dados. Para aplicações, entenda o custo do `OFFSET` e considere o uso de cursores para garantir que sua API continue rápida, não importa o tamanho do seu banco.
+Para decidir sua estratégia de paginação, avalie o volume de dados e o comportamento do usuário: se você está construindo um relatório administrativo onde o usuário precisa saltar para a página 50, o **OFFSET** é aceitável (desde que a tabela não tenha milhões de linhas). Se você está construindo uma API pública de alto tráfego ou um feed infinito, o **CURSOR** é obrigatório para garantir performance constante e evitar que a latência da sua query aumente à medida que o usuário "rola" a página.

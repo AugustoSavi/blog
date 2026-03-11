@@ -33,6 +33,6 @@ A resposta correta muitas vezes é **ambos**:
 2. A transação é aprovada. Um evento é disparado para o Kafka.
 3. Um consumidor salva o detalhe rico da transação no **DynamoDB** para histórico de extrato (Alta Escala).
 
-## Conclusão
+## Conclusão: O cofre e o armazém
 
-Escolher entre SQL e NoSQL não é uma questão de preferência pessoal, mas de **requisitos de consistência e volume**. Use o MySQL para o que é sagrado (dinheiro) e o DynamoDB para o que é volumoso (logs, eventos, trilhas de auditoria).
+Pense no **MySQL** como o cofre de um banco: ele é rígido, altamente seguro, garante que nada saia sem registro e que cada centavo esteja no lugar certo. Já o **DynamoDB** é como um imenso armazém logístico: ele foca em velocidade de entrada e saída, escala horizontalmente conforme o estoque cresce e permite que você encontre qualquer item instantaneamente, desde que saiba o código da prateleira. Use o cofre para o patrimônio e o armazém para a operação em massa.

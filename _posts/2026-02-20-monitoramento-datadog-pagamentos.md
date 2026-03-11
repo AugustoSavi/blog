@@ -38,6 +38,6 @@ Com o APM (Application Performance Monitoring) do Datadog, você vê o trace de 
 
 Defina objetivos claros. "99.9% das transações devem ser processadas em menos de 200ms". O Datadog monitora esse erro de orçamento (*Error Budget*) e te avisa antes que você quebre o acordo de nível de serviço (SLA) com seus clientes.
 
-## Conclusão
+## Takeaway prático
 
-Observabilidade em sistemas críticos é sobre transparência e rapidez na resposta. Usar o Datadog para monitorar o sucesso das transações, e não apenas o status do servidor, é o que garante que os usuários nunca fiquem na mão na hora de usar seus benefícios.
+Para começar a monitorar o valor de negócio hoje, crie um "Dashboard de Saúde da Operação" no Datadog que contenha apenas três gráficos: a taxa de sucesso das transações (2xx vs 4xx/5xx), a latência média do gateway de pagamento e o volume de transações por minuto comparado com a semana anterior. Esse "triângulo de ouro" dirá mais sobre a saúde da sua empresa do que cem gráficos de uso de CPU.

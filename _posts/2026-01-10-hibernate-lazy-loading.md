@@ -1,5 +1,5 @@
 ---
-title: "Hibernate Lazy Loading: O que é, como funciona e o perigo da Exception"
+title: "Hibernate Lazy Loading"
 date: 2026-01-10 09:00:00 -0300
 categories: [Hibernate, JPA]
 tags: [hibernate, jpa]
@@ -51,6 +51,6 @@ org.hibernate.LazyInitializationException: could not initialize proxy - no Sessi
 
 O Lazy Loading é o culpado número 1 pelo problema do **N+1 queries**. Se você buscar 100 usuários e, em um loop, acessar os pedidos de cada um, o Hibernate fará 1 query para os usuários e **100 queries adicionais** para os pedidos. Sempre monitore seus logs de SQL!
 
-## Conclusão
+## Próximos Passos: Dominando a Performance
 
-Lazy Loading é uma ferramenta de otimização poderosa, mas exige que você entenda o ciclo de vida da sessão do Hibernate. Use-o com sabedoria e prefira sempre ser explícito sobre o que você quer carregar através de `JOIN FETCH` para evitar surpresas em produção.
+Entender o Lazy Loading é apenas o primeiro passo para dominar a persistência de dados. Agora que você sabe como o Hibernate evita carregar dados desnecessários, que tal aprofundar no oposto? No próximo post, vamos explorar o [Problema do N+1 e como o JOIN FETCH resolve gargalos de performance]({% post_url 2026-02-05-problema-n-plus-one-orm %}) de forma definitiva, garantindo que sua aplicação escale sem sufocar o banco de dados.

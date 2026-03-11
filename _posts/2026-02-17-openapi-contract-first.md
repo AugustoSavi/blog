@@ -49,6 +49,6 @@ Você coloca o arquivo `api.yaml` na pasta do projeto e o plugin do Maven gera a
 - **Segurança:** A validação de tipos e campos obrigatórios é feita automaticamente.
 - **Menos Boilerplate:** Você não precisa escrever dezenas de DTOs manualmente; o gerador faz isso por você seguindo o padrão da indústria.
 
-## Conclusão
+## Takeaway prático
 
-Tratar sua API como um produto exige que o contrato seja levado a sério. O OpenAPI Contract-First elimina ambiguidades, acelera o desenvolvimento e garante que o seu sistema seja integrado de forma profissional e robusta.
+Se você quer implementar o *Contract-First* hoje, comece pequeno: defina o próximo endpoint da sua API no Swagger Editor antes de tocar no código do Controller. Compartilhe o YAML gerado com os consumidores da API e utilize uma ferramenta de mock para validar se o contrato atende às necessidades de todos. Esse pequeno investimento de tempo inicial evitará horas de refatoração e desalinhamento entre os times no futuro.

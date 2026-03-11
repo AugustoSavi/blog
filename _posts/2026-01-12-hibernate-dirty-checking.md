@@ -1,5 +1,5 @@
 ---
-title: "Hibernate Dirty Checking: A Mágica por trás do Update Automático"
+title: "Hibernate Dirty Checking"
 date: 2026-01-12 09:00:00 -0300
 categories: [Hibernate, JPA]
 tags: [hibernate, jpa]
@@ -43,6 +43,6 @@ Embora muito prático, o Dirty Checking tem um custo de performance. Se você ca
 
 Por padrão, o `UPDATE` gerado pelo Hibernate inclui **todas as colunas** da tabela, mesmo as que não mudaram. Se você quiser que ele envie apenas as colunas alteradas, use a anotação `@DynamicUpdate` na sua entidade. Isso pode ajudar em tabelas com muitas colunas ou alto volume de escritas.
 
-## Conclusão
+## O Princípio da Sincronização Automática
 
-O Dirty Checking é uma das funcionalidades que torna o Hibernate um framework tão produtivo, permitindo que você foque na lógica de domínio em vez de comandos SQL. No entanto, em operações de grande volume, lembre-se de que essa conveniência tem um preço.
+No Hibernate, a unidade de trabalho (`Session`) é a dona da verdade sobre o estado das suas entidades. A regra é clara: qualquer alteração em um objeto **monitorado** será persistida no banco de dados ao final da transação, independentemente de chamadas explícitas a métodos de salvamento. Para evitar efeitos colaterais indesejados, sempre utilize transações de "somente leitura" em fluxos de consulta e evite manter objetos de entidade abertos além do necessário na memória.

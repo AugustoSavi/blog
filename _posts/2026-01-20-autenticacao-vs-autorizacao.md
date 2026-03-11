@@ -1,5 +1,5 @@
 ---
-title: "Autenticação vs Autorização: Quem é você e o que você pode fazer?"
+title: "Autenticação vs Autorização"
 date: 2026-01-20 09:00:00 -0300
 categories: [Segurança, API Gateway]
 tags: [segurança, api gateway]
@@ -47,6 +47,6 @@ O token JWT é excelente porque ele pode carregar tanto a identidade (subject) q
 }
 ```
 
-## Conclusão
+## Conclusão: O Crachá e a Biometria
 
-Lembre-se: **Autenticação sempre vem antes da Autorização**. Você não pode saber o que alguém pode fazer antes de saber quem essa pessoa é. Em sistemas modernos, delegue a validação inicial para o Gateway, mas mantenha a lógica fina de autorização (regras de negócio) dentro dos seus serviços.
+Pense na segurança do seu sistema como um prédio comercial de alta segurança. A **Autenticação** é o momento em que você passa pela recepção, prova quem é e recebe o seu crachá (Token); agora o prédio sabe que "você é você". A **Autorização**, por outro lado, são os leitores biométricos em cada porta interna: eles não perguntam mais quem você é (isso já foi resolvido no crachá), mas sim se aquele crachá específico tem permissão para abrir a sala do servidor ou apenas o refeitório. Um sistema robusto precisa de ambos funcionando em perfeita harmonia.

@@ -65,6 +65,6 @@ public class OrderService {
 
 O motivo pelo qual aplicações Spring Boot grandes demoram para iniciar é justamente esse uso intensivo de reflexão e scan de classpath. É por isso que o GraalVM e o Micronaut estão ganhando espaço, ao mover essa lógica para o tempo de compilação.
 
-## Conclusão
+## Conclusão: Lições de um Desenvolvedor Spring
 
-O Spring Boot abstrai uma complexidade enorme usando reflexão para nos dar produtividade. Entender esse mecanismo nos ajuda a escrever códigos mais fáceis de testar e a entender os trade-offs de cada tipo de injeção.
+Durante anos, usei o `@Autowired` em campos privados por pura conveniência, até enfrentar o primeiro pesadelo de testes unitários onde precisei de "ginástica" com reflexão apenas para injetar um mock. Migrar para a injeção via construtor me ensinou que o Spring não deve ser uma muleta para o design pobre, mas um facilitador para um código que, idealmente, deveria ser capaz de rodar e ser testado até sem o framework por perto. Menos "mágica" oculta e mais clareza arquitetural fazem toda a diferença no longo prazo.

@@ -23,7 +23,7 @@ Ele guarda uma tabela chamada `flyway_schema_history` no seu banco. Sempre que s
 
 Em sistemas de alta disponibilidade, você não pode desligar o banco para fazer uma migração. Algumas migrações são perigosas (como o `ALTER TABLE` em tabelas com milhões de linhas).
 
-**Regras de Ouro:**
+**Regras**
 1.  **Nunca delete ou renomeie colunas de imediato:** Use o padrão *Expand and Contract*. Primeiro adicione a nova, depois migre os dados, e só no próximo deploy remova a antiga.
 2.  **Evite Default Values pesados:** Adicionar uma coluna com `DEFAULT 'ACTIVE'` em uma tabela de 100 milhões de linhas pode travar o banco por minutos.
 3.  **Cuidado com Locks:** Algumas operações bloqueiam a tabela para escritas. Verifique se o seu banco (MySQL 8, por exemplo) suporta *Instant DDL* ou use ferramentas como o **gh-ost** ou **pt-online-schema-change**.
@@ -39,6 +39,6 @@ Basta adicionar a dependência no `pom.xml` e colocar os scripts na pasta certa.
 </dependency>
 ```
 
-## Conclusão
+## Olhando para o futuro
 
-Engenharia de software moderna exige automação. O Flyway garante que o seu banco de dados evolua junto com o seu código, de forma segura, auditável e sem surpresas no momento do deploy.
+À medida que avançamos para arquiteturas cada vez mais efêmeras e baseadas em nuvem, a tendência é que as migrações de banco se tornem ainda mais integradas aos pipelines de GitOps. No futuro próximo, ferramentas como o Flyway não apenas aplicarão scripts, mas também analisarão o impacto de performance de cada `ALTER TABLE` em tempo real, sugerindo otimizações ou bloqueando mudanças que possam comprometer a estabilidade do sistema em produção. Automatizar hoje é estar pronto para o amanhã.

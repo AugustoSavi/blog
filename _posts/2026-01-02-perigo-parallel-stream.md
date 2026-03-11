@@ -49,6 +49,6 @@ try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
 }
 ```
 
-## Conclusão
+## Paralelismo em Streams
 
-O `parallelStream()` é uma ferramenta poderosa, mas "com grandes poderes vêm grandes responsabilidades". Em servidores de alta concorrência, prefira o controle explícito de pools de threads ou abordagens assíncronas para evitar que um pequeno processamento paralelo se torne um gargalo sistêmico.
+Nunca utilize `parallelStream()` para operações que envolvam I/O bloqueante ou recursos compartilhados globalmente. Reserve o paralelismo implícito exclusivamente para tarefas **CPU-bound** puras e isoladas. Se a thread precisa esperar por algo externo, você deve assumir o controle total do ciclo de vida dessas threads através de executores dedicados ou modelos reativos.

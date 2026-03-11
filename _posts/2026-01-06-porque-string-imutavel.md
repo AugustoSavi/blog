@@ -32,7 +32,7 @@ String s4 = new String("Java");
 System.out.println(s3 == s4); // false!
 ```
 
-*Por que o 'false'?* Ao usar `new String("...")`, você instrui a JVM a criar um novo objeto no Heap, ignorando a otimização do String Pool. Como o operador `==` compara o **endereço de memória** (referência) e não o conteúdo, o resultado é `false`. Por isso, a regra de ouro no Java é: para comparar o conteúdo de Strings, use sempre `.equals()`.
+*Por que o 'false'?* Ao usar `new String("...")`, você instrui a JVM a criar um novo objeto no Heap, ignorando a otimização do String Pool. Como o operador `==` compara o **endereço de memória** (referência) e não o conteúdo, o resultado é `false`. Por isso no Java é: para comparar o conteúdo de Strings, use sempre `.equals()`.
 
 ## 2. Segurança de Threads (Thread-Safety)
 
@@ -50,6 +50,6 @@ Como o valor da String não muda, o seu **HashCode** também não muda. O Java c
 
 Se você fizer algo como `str = str + " novo conteúdo"` em um loop, você estará criando milhares de objetos descartáveis, o que sobrecarrega o Garbage Collector. Para esses casos, o Java fornece o `StringBuilder` (não thread-safe, mais rápido) e o `StringBuffer` (thread-safe, mais lento).
 
-## Conclusão
+## Uma Reflexão sobre Design de Linguagens
 
-A imutabilidade da String é um pilar de segurança, estabilidade e performance no ecossistema Java. Da próxima vez que você usar uma String, lembre-se de que ela é imutável para garantir que seu sistema seja sólido como uma rocha.
+Agora que entendemos os pilares de segurança e performance que sustentam a imutabilidade da `String`, fica o questionamento: se as Strings fossem mutáveis hoje, como seria o ecossistema de bibliotecas e frameworks Java? Quantas brechas de segurança e condições de corrida teríamos que gerenciar manualmente em cada requisição HTTP ou conexão de banco? A imutabilidade não é apenas uma restrição; é a liberdade de não precisar se preocupar com o estado global de um dos tipos mais fundamentais da computação.

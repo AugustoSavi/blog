@@ -1,5 +1,5 @@
 ---
-title: "Kotlin Coroutines vs Threads: Por que menos é mais na concorrência?"
+title: "Kotlin Coroutines vs Threads"
 date: 2026-02-03 09:00:00 -0300
 categories: [Kotlin, Coroutines]
 tags: [kotlin, coroutines]
@@ -40,6 +40,6 @@ O Kotlin introduz o conceito de **Concorrência Estruturada**. Isso significa qu
 
 Uma Thread é um recurso caro do Sistema Operacional. Uma Coroutine é apenas um objeto gerenciado pela JVM. O custo de trocar de contexto entre Threads (Context Switch) é alto. O custo de suspender uma Coroutine é quase zero.
 
-## Conclusão
+## Conclusão: O Garçom e o Cozinheiro
 
-Coroutines são a evolução natural da concorrência na JVM. Elas permitem escrever código assíncrono que parece síncrono, mantendo a legibilidade e a alta performance necessária para microserviços modernos.
+Para visualizar a diferença, imagine um restaurante. Uma **Thread** é como um garçom que, após anotar o pedido, fica parado na frente da cozinha esperando o prato ficar pronto; ele não atende mais ninguém enquanto não entregar aquele prato. Já uma **Coroutine** é o garçom moderno: ele anota o pedido, entrega a comanda na cozinha (suspensão) e imediatamente vai atender outra mesa. Quando o sino da cozinha toca, ele volta para pegar o prato e entregá-lo. No final do dia, o restaurante com "garçons-coroutines" atende muito mais clientes com a mesma equipe (CPU).

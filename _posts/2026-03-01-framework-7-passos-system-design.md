@@ -1,7 +1,7 @@
 ---
 title: "Framework de 7 Passos: Como Engenheiros de FAANG abordam System Design"
 date: 2026-03-01 09:00:00 -0300
-categories: [Arquitetura, Carreira]
+categories: [Arquitetura]
 tags: [system-design, arquitetura]
 render_with_liquid: false
 ---
@@ -87,6 +87,6 @@ Nenhuma arquitetura é perfeita. Toda escolha tem um custo.
 
 Muitos candidatos dizem "meu sistema é 100% disponível". **100% não existe.** Até o Google Cloud e a AWS têm SLAs de 99.9% a 99.99%. Dizer 100% mostra falta de experiência com sistemas reais que falham (e falham o tempo todo).
 
-## Conclusão
+## Takeaway prático
 
-Abordar System Design com método transforma uma conversa caótica em uma demonstração de engenharia profissional. Da próxima vez que precisar projetar um sistema, respire, faça as perguntas de clarificação e siga os passos. O desenho final é apenas a consequência de um bom raciocínio.
+Para sua próxima discussão de arquitetura, imprima mentalmente estes 7 passos: **Clarificar -> Funcionais -> Não-Funcionais -> Escala -> Alto Nível -> Detalhamento -> Trade-offs.** Começar pelo Passo 1 (Clarificação) em vez de pular direto para o Passo 5 (Desenho) é o que demonstra senioridade e evita que você projete um canhão laser para matar uma mosca (ou um sistema frágil para um tráfego massivo).

@@ -54,6 +54,11 @@ while(true) {
 
 Existem tipos especiais de `OutOfMemoryError` que não são no Heap, como o `Metaspace` (onde ficam as definições das classes). Já o `StackOverflowError` é quase sempre relacionado à lógica de chamadas de métodos.
 
-## Conclusão
+## Checklist de Diagnóstico Rápido
 
-Se o log mostra `StackOverflow`, verifique seus algoritmos recursivos. Se mostra `OutOfMemory`, verifique vazamentos de memória e o tamanho dos seus caches. Entender o local do erro é o primeiro passo para uma correção rápida.
+Na próxima vez que o sistema cair, siga estes passos antes de reiniciar:
+- [ ] O erro é `StackOverflowError`? Verifique imediatamente o rastro de pilha (Stack Trace) em busca de métodos que chamam a si mesmos.
+- [ ] O erro é `OutOfMemoryError`? Identifique se é `Java heap space` (objetos) ou `Metaspace` (classes/leaks de classloader).
+- [ ] Verifique as flags `-Xss` (para Stack) e `-Xmx` (para Heap) no script de inicialização.
+- [ ] Em caso de OOM, gere um Heap Dump (`jmap` ou `-XX:+HeapDumpOnOutOfMemoryError`) para análise posterior.
+- [ ] Avalie se o problema é um pico genuíno de carga ou um vazamento de memória persistente.

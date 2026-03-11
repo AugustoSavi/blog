@@ -71,6 +71,6 @@ Isso permite que o time de marketing altere o texto das mensagens sem que você 
 
 Muitas vezes, um usuário tem múltiplos dispositivos (um iPad e um Android). No Push, você envia para múltiplos **Device Tokens**, mas o usuário só quer ver uma notificação. O Notification Service deve gerenciar a lista de tokens ativos de cada `userId`, limpando tokens inválidos automaticamente sempre que o provedor retornar um erro de `ExpiredToken`.
 
-## Conclusão
+## O futuro das notificações
 
-Arquitetura de notificações é sobre **desacoplamento** e **entrega garantida**. Ao isolar a complexidade dos canais e provedores em um serviço dedicado, você libera seu core financeiro para focar no que realmente importa, garantindo que a mensagem certa chegue ao usuário certo, no canal certo, no momento certo.
+À medida que a Inteligência Artificial se torna onipresente, o próximo passo para os serviços de notificação é a **hiper-personalização preditiva**. No futuro próximo, o `NotificationService` não apenas entregará mensagens, mas decidirá o momento exato em que o usuário tem maior probabilidade de ler um alerta de cashback ou de ignorar um SMS promocional, transformando a comunicação em uma experiência verdadeiramente adaptativa e menos invasiva.

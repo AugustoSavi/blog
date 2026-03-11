@@ -90,6 +90,13 @@ Utilize o padrão **Domain Events**: o seu objeto `Expense` registra que uma tra
 
 Se o seu fluxo for linear e simples, o padrão de design acima ou o **Spring Statemachine** resolvem. Se você tem fluxos humanos que levam dias (ex: "esperar o gestor aprovar por 48h antes de escalar"), considere **Workflow Engines** como **Temporal** ou **Camunda**. Eles gerenciam a persistência do estado do fluxo de forma resiliente e duradoura.
 
-## Conclusão
+## Checklist para Fluxos de Estado
 
-Gerenciar despesas é gerenciar estados. Ao adotar Máquinas de Estado e controle rigoroso de concorrência, você transforma um processo caótico em um fluxo de dados previsível, auditável e seguro. Não deixe sua lógica de negócio virar um mar de `ifs`.
+Ao desenhar seu próximo sistema de aprovação, verifique:
+- [ ] Meus estados estão explicitamente definidos em um `Enum` ou Tabela?
+- [ ] Eu impedi transições inválidas (ex: PAGO para REPROVADO) no modelo de domínio?
+- [ ] Estou usando `Optimistic Locking` (@Version) para evitar aprovações simultâneas?
+- [ ] Efeitos colaterais (e-mails, Kafka) estão desacoplados da transição principal?
+- [ ] O histórico de quem mudou o quê e quando está sendo gravado (Auditoria)?
+
+Seguir esses pontos garante que seu fluxo de despesas seja resiliente a falhas humanas e técnicas.
