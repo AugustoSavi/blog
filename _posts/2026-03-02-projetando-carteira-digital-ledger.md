@@ -10,7 +10,7 @@ Se você está construindo uma fintech ou qualquer sistema que lide com dinheiro
 
 O **Double-entry Ledger** (Livro-razão de Partida Dobrada) é um padrão contábil de 500 anos usado por todos os bancos e fintechs modernas. Ele garante que cada transação financeira seja composta por dois lançamentos: um crédito e um débito, cuja soma deve ser zero.
 
-## O Problema: A Coluna `balance`
+## A Coluna `balance`
 
 Imagine que você tem a tabela `users` com `balance: 100.00`. 
 O usuário faz um pagamento de 50.00. 

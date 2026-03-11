@@ -8,7 +8,7 @@ render_with_liquid: false
 
 Imagine que você está pagando um boleto no seu app. Você clica em "Confirmar", a internet oscila e o app mostra um erro. Você clica de novo. Sem **Idempotência**, você acabaria pagando o boleto duas vezes. Em sistemas financeiros, isso é inaceitável.
 
-## O Problema da Rede Não Confiável
+## Rede Não Confiável
 
 Em sistemas distribuídos, existem três tipos de falhas:
 1.  A requisição não chegou ao servidor.

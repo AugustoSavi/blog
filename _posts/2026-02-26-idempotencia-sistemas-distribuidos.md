@@ -58,7 +58,7 @@ public ResponseEntity<PaymentResponse> processPayment(
 
 ## Funcionamento Interno e Desafios
 
-### O Problema da Corrida (Race Conditions)
+### Race Conditions
 
 Não basta apenas checar se a chave existe. Em sistemas de alta concorrência, duas requisições com a mesma chave podem chegar ao mesmo tempo em instâncias diferentes da sua API. Se ambas checarem o banco e virem que a chave não existe, ambas processarão o pagamento.
 

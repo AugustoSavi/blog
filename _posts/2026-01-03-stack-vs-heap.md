@@ -4,6 +4,7 @@ date: 2026-01-03 09:00:00 -0300
 categories: [Java, JVM]
 tags: [java, jvm]
 render_with_liquid: false
+mermaid: true
 ---
 
 Se você já programou em Java, provavelmente ouviu que "objetos ficam no Heap e variáveis locais ficam na Stack". Mas você sabe o porquê dessa divisão e como ela impacta a performance da sua aplicação? Vamos abrir o capô da JVM e entender essa dinâmica.
@@ -11,6 +12,26 @@ Se você já programou em Java, provavelmente ouviu que "objetos ficam no Heap e
 ## Introdução: A Organização da Memória
 
 A JVM divide a memória de forma estratégica para equilibrar velocidade de acesso e flexibilidade. A Stack e o Heap são as duas áreas principais onde o seu código "vive" durante a execução.
+
+```mermaid
+graph LR
+    subgraph STACK [Stack - Memória de Execução]
+        direction TB
+        S1[Frame: methodA]
+        S2[Frame: methodB]
+        S3[Variáveis Locais / Primitivos]
+    end
+
+    subgraph HEAP [Heap - Memória de Dados]
+        direction TB
+        H1[Objeto User]
+        H2[Array de Strings]
+        H3[Instância de Order]
+    end
+
+    S3 -- Referência --> H1
+    S3 -- Referência --> H3
+```
 
 ## A Stack (Pilha): O Reino da Organização
 

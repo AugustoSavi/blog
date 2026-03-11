@@ -10,7 +10,7 @@ Em qualquer sistema corporativo, despesas não são pagas instantaneamente. Exis
 
 A solução profissional para gerenciar fluxos complexos de negócio é o uso de **Máquinas de Estado (State Machines)**.
 
-## O Problema: A Explosão de Estados
+## A Explosão de Estados
 
 À medida que o sistema cresce, as regras de transição mudam:
 - "Não pode aprovar uma despesa que já foi paga."

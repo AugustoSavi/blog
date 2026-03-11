@@ -2,17 +2,36 @@
 title: "LRU Cache: Implementando um Algoritmo de Cache com Deque e HashMap"
 date: 2026-01-28 09:00:00 -0300
 categories: [Algoritmos, Estrutura de Dados]
-tags: [algoritmos, estrutura de dados]
+tags: [algoritmos, estrutura-de-dados]
 render_with_liquid: false
+mermaid: true
 ---
 
 O cache é fundamental para performance, mas a memória é finita. Como decidir qual item remover quando o cache está lotado? O algoritmo mais popular é o **LRU (Least Recently Used)**: removemos o item que não é acessado há mais tempo. Vamos implementar um do zero!
 
-## Velocidade de O(1)
+## O Gancho: Velocidade de O(1)
 
 Um bom cache precisa ser rápido. Tanto a inserção quanto a busca devem ser, idealmente, **O(1)**. Para isso, precisamos de uma combinação de duas estruturas de dados:
 1.  **HashMap:** Para busca rápida pelo ID.
 2.  **Doubly Linked List (ou Deque):** Para manter a ordem de uso e permitir remoção rápida das pontas.
+
+```mermaid
+graph TD
+    subgraph HashMap
+        K1[Key 1] --> N1[Node Pointer]
+        K2[Key 2] --> N2[Node Pointer]
+        K3[Key 3] --> N3[Node Pointer]
+    end
+
+    subgraph DoublyLinkedList [Fila de Recência]
+        direction LR
+        HEAD[MRU - Mais Recente] --- N1
+        N1 <--> N2
+        N2 <--> N3
+        N3 --- TAIL[LRU - Menos Recente]
+    end
+```
+
 
 ## A Lógica
 

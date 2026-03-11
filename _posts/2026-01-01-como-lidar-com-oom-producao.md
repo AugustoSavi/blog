@@ -8,7 +8,7 @@ render_with_liquid: false
 
 Você está em um plantão tranquilo quando, de repente, o alerta do monitoramento dispara: `java.lang.OutOfMemoryError: Java heap space`. O serviço parou de responder, as transações estão falhando e a pressão aumenta. O que você faz? Reinicia o pod e reza para não acontecer de novo ou investiga a fundo?
 
-## O Problema: Quando a Memória Transborda
+## Quando a Memória Transborda
 
 O `OutOfMemoryError` (OOM) ocorre quando a Java Virtual Machine (JVM) não consegue mais alocar memória para novos objetos e o Garbage Collector não consegue liberar espaço suficiente. Em produção, isso geralmente é sintoma de um **Memory Leak** (vazamento de memória) ou de um dimensionamento incorreto dos recursos (Heap muito pequeno para a carga atual).
 

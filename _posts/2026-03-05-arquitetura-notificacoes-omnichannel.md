@@ -10,7 +10,7 @@ Em sistemas modernos, notificações são o "pulso" da aplicação. O usuário q
 
 O maior erro é acoplar a lógica de notificação diretamente no serviço de negócio. A solução é um **Notification Service** centralizado e desacoplado.
 
-## O Problema: Acoplamento e Latência
+## Acoplamento e Latência
 
 Imagine o `PaymentService` chamando a API do Twilio (SMS) ou do Firebase (Push) de forma síncrona:
 1.  **Latência:** Se o Twilio demorar 5 segundos, o seu pagamento demora 5 segundos a mais.

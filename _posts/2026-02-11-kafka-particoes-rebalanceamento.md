@@ -26,7 +26,7 @@ Se você tem um tópico com 4 partições e um grupo de consumidores com 2 inst�
 ## O Temido Rebalanceamento (Rebalance)
 
 Sempre que um consumidor entra ou sai do grupo (ou cai), o Kafka redistribui as partições entre os sobreviventes.
-- **O Problema:** Durante o rebalanceamento, o processamento pode parar (STW - Stop the World).
+- **Problema:** Durante o rebalanceamento, o processamento pode parar (STW - Stop the World).
 - **A Causa:** Geralmente consumidores lentos que demoram mais para processar do que o `max.poll.interval.ms`, fazendo o Kafka achar que eles morreram.
 
 ## Dica: Chaves de Partição (Partition Keys)

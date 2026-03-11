@@ -25,7 +25,7 @@ spring:
 
 Com isso, o Spring esperará até 30 segundos para que as requisições ativas terminem.
 
-## O problema do Kubernetes
+## Kubernetes
 
 Mesmo com o Spring configurado, o Kubernetes pode ser mais rápido que a propagação da rede. Ele remove o Pod do `Service` e envia o `SIGTERM` quase simultaneamente. Isso pode causar erros 504 (Gateway Timeout) se o Ingress tentar enviar tráfego para um Pod que já está "morrendo".
 

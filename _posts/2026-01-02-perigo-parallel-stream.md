@@ -12,7 +12,7 @@ Você tem uma lista enorme de Objetos e precisa processá-las. Alguém sugere: "
 
 O Java 8 introduziu os Streams Paralelos para facilitar o processamento em múltiplos núcleos. No entanto, o que muitos esquecem é que, por baixo dos panos, todos os `parallelStream()` da sua aplicação compartilham o **mesmo pool de threads**: o `ForkJoinPool.commonPool()`.
 
-## O Problema do Pool Compartilhado
+## Pool Compartilhado
 
 Imagine um servidor rodando Spring Boot com 100 usuários simultâneos. Se cada requisição disparar um `parallelStream()`, todas estarão lutando pelas mesmas threads do `commonPool`. Se uma dessas threads travar por I/O bloqueante (como uma chamada de API lenta ou query de banco), ela retira essa thread do pool global, afetando partes da aplicação que nem usam o stream paralelo.
 

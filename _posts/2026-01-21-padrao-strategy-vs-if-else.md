@@ -12,7 +12,7 @@ Você abre um arquivo de serviço e encontra um método com 300 linhas, onde met
 
 O padrão Strategy permite que você defina uma família de algoritmos, coloque cada um deles em uma classe separada e torne seus objetos intercambiáveis. Isso segue o "O" do SOLID: seu código fica aberto para extensão (novas estratégias) mas fechado para modificação (você não mexe no código que já funciona).
 
-## O Problema (O Código 'Sujeira')
+## Código sujo
 
 ```java
 public void processPayment(String type, double amount) {

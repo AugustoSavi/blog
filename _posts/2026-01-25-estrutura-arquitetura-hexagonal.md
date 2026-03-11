@@ -2,15 +2,55 @@
 title: "Arquitetura Hexagonal: Como estruturar o projeto"
 date: 2026-01-25 09:00:00 -0300
 categories: [Arquitetura de Software]
-tags: [arquitetura de software]
+tags: [arquitetura-de-software]
 render_with_liquid: false
+mermaid: true
 ---
 
 Você já sentiu que seu código está "preso" ao framework? Que trocar o Spring pelo Micronaut ou o MySQL pelo DynamoDB seria um pesadelo? A **Arquitetura Hexagonal (ou Ports & Adapters)** resolve isso separando o que é "negócio" do que é "ferramenta".
 
-## O Core é Sagrado
+## O Gancho: O Core é Sagrado
 
 Na Arquitetura Hexagonal, o centro (Core) contém as regras de negócio puras. Ele não sabe o que é um Banco de Dados, o que é um Controller REST ou o que é o Kafka. Ele apenas expõe e consome interfaces (**Ports**).
+
+```mermaid
+graph LR
+    subgraph ADAPTERS_IN [Adapters de Entrada]
+        REST[REST Controller]
+        CLI[CLI]
+        KAFKA_IN[Kafka Consumer]
+    end
+
+    subgraph CORE [CORE - Hexágono Interno]
+        direction TB
+        subgraph PORTS_IN [Ports de Entrada]
+            S_INT[Service Interface]
+        end
+        subgraph DOMAIN [Domínio]
+            LOGIC[Business Logic]
+            MODEL[Entities]
+        end
+        subgraph PORTS_OUT [Ports de Saída]
+            R_INT[Repository Interface]
+        end
+    end
+
+    subgraph ADAPTERS_OUT [Adapters de Saída]
+        JPA[JPA / MySQL]
+        API_EXT[API Externa]
+        KAFKA_OUT[Kafka Producer]
+    end
+
+    REST --> S_INT
+    CLI --> S_INT
+    KAFKA_IN --> S_INT
+    S_INT --> LOGIC
+    LOGIC --> R_INT
+    R_INT --> JPA
+    R_INT --> API_EXT
+    R_INT --> KAFKA_OUT
+```
+
 
 ## A Estrutura de Pastas Sugerida
 

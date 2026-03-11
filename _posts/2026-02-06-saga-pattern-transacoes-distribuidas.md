@@ -2,8 +2,9 @@
 title: "Saga Pattern: Gerenciando Transações em um Mundo sem 'Commit' Global"
 date: 2026-02-06 09:00:00 -0300
 categories: [Arquitetura Distribuída, Microserviços]
-tags: [arquitetura distribuída, microserviços]
+tags: [arquitetura, microservicos]
 render_with_liquid: false
+mermaid: true
 ---
 
 Em um monólito, se você precisa salvar um pedido e baixar o estoque, você usa uma transação `@Transactional` e o banco garante o ACID. Mas e se o Pedido estiver no Microserviço A e o Estoque no Microserviço B? Como garantir que os dois aconteçam ou os dois falhem? O **Saga Pattern** é a resposta.
@@ -11,6 +12,29 @@ Em um monólito, se você precisa salvar um pedido e baixar o estoque, você usa
 ## O Fim das Transações Distribuídas (2PC)
 
 Antigamente usávamos transações distribuídas (Two-Phase Commit), mas elas são lentas e não escalam bem na nuvem. O Saga resolve isso usando uma sequência de **transações locais** e **mensageria**.
+
+```mermaid
+sequenceDiagram
+    participant O as Orquestrador
+    participant P as Pedido
+    participant E as Estoque
+    participant Pag as Pagamento
+
+    O->>P: 1. Criar Pedido
+    P-->>O: Sucesso
+    O->>E: 2. Reservar Estoque
+    E-->>O: Sucesso
+    O->>Pag: 3. Processar Pagamento
+    rect rgba(255, 0, 0, 0.1)
+    Pag-->>O: Falha no Pagamento
+    end
+    Note over O, Pag: Iniciando Compensação
+    O->>E: 4. Cancelar Reserva Estoque (Compensação)
+    E-->>O: Estoque Devolvido
+    O->>P: 5. Cancelar Pedido
+    P-->>O: Pedido Cancelado
+```
+
 
 ## Como funciona a Saga
 

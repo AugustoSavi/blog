@@ -10,7 +10,7 @@ Em uma fintech de benefícios, o "Dia do Benefício" é o momento de maior press
 
 O segredo para sobreviver a esse pico não é ter um banco de dados maior, mas sim o uso de **Processamento em Lote (Batch) e Mensageria Assíncrona**.
 
-## O Problema: O Gargalo da Transação Síncrona
+## O Gargalo da Transação Síncrona
 
 Se você tentar processar o arquivo de crédito de forma síncrona na requisição HTTP:
 1.  A conexão do usuário ficará aberta por minutos (gerando timeout).

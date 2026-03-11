@@ -10,7 +10,7 @@ Em sistemas de pagamento, cada segundo conta. O usuário está no caixa do super
 
 A detecção de fraude moderna não se baseia apenas em regras fixas (`if amount > 1000`), mas em um ecossistema complexo de modelos de Machine Learning (ML) e processamento de eventos.
 
-## O Problema: Janela de Decisão Ultra-Rápida
+## Janela de Decisão Ultra-Rápida
 
 Imagine o fluxo de um pagamento:
 1.  **Request:** O terminal do lojista envia a transação.

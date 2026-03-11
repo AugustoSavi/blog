@@ -2,15 +2,27 @@
 title: "Circuit Breaker: Proteja seu sistema de falhas em cascata"
 date: 2026-01-24 09:00:00 -0300
 categories: [Resiliência, Microserviços]
-tags: [resiliência, microserviços]
+tags: [resiliencia, microservicos]
 render_with_liquid: false
+mermaid: true
 ---
 
 Em uma arquitetura de microserviços, as falhas são inevitáveis. Uma API lenta ou um banco de dados fora do ar podem gerar um efeito dominó que derruba todo o seu ecossistema. O **Circuit Breaker** (Disjuntor) é a proteção que evita que uma pequena falha se torne um desastre total.
 
-## A Analogia do Disjuntor Elétrico
+## O Gancho: A Analogia do Disjuntor Elétrico
 
 Na sua casa, o disjuntor desarma quando há uma sobrecarga, protegendo os seus aparelhos. No software, o Circuit Breaker interrompe chamadas a um serviço que está falhando, protegendo o seu sistema de ficar travado esperando respostas que não virão.
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> CLOSED
+    CLOSED --> OPEN: Falhas > Limite
+    OPEN --> HALF_OPEN: Tempo de espera esgotado
+    HALF_OPEN --> CLOSED: Sucesso nos testes
+    HALF_OPEN --> OPEN: Falha nos testes
+```
+
 
 ## Os 3 Estados do Disjuntor
 

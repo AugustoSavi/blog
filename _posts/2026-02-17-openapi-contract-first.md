@@ -8,7 +8,7 @@ render_with_liquid: false
 
 Muitos times usam o Swagger apenas como uma "página bonitinha" que documenta a API depois que ela está pronta. Mas, o **OpenAPI** deve ser o ponto de partida: o **Contract-First Development**.
 
-## O Problema da Integração
+## Integração
 
 O time de Frontend e o time de Mobile estão parados esperando o Back-end terminar a API. Quando o Back-end termina, o JSON não é o que o Front esperava. Esse vai-e-vem custa caro.
 
