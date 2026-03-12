@@ -1,6 +1,6 @@
 ---
 title: "Lock Otimista vs Pessimista: Como evitar o caos em sistemas concorrentes"
-date: 2026-03-11 09:00:00 -0300
+date: 2026-03-09 09:00:00 -0300
 categories: [Banco de Dados, Performance]
 tags: [sql, jpa, concorrência, java, banco-de-dados]
 render_with_liquid: false

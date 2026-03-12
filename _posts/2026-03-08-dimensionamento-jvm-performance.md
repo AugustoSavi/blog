@@ -1,6 +1,6 @@
 ---
 title: "Como dimensionar recursos da JVM sem adivinhação"
-date: 2026-03-10 09:00:00 -0300
+date: 2026-03-08 09:00:00 -0300
 categories: [JVM, Performance]
 tags: [java, jvm, performance, devops, monitoramento]
 render_with_liquid: false
