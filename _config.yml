@@ -16,10 +16,10 @@ timezone:
 
 title: Augusto Savi # the main title
 
-tagline: Descarregando minha memória e posts sobre o que estou estudando # it will display as the subtitle
+tagline: Estudando e deixando registrado o caminho. # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
-  A minimal, responsive and feature-rich Jekyll theme for technical writing.
+  Um espaço para compartilhar estudos, desafios técnicos e soluções do dia a dia no desenvolvimento de sistemas e arquitetura backend.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
