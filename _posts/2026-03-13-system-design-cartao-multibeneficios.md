@@ -10,7 +10,7 @@ mermaid: true
 Projetar o backend de um sistema de cartão multibenefícios que processa milhares de transações por segundo é um dos desafios mais complexos em fintechs. O objetivo não é apenas criar um CRUD, mas garantir **consistência financeira absoluta**, **baixa latência**, **auditoria total** e uma **infraestrutura elástica**.
 
 {: .prompt-tip }
-> **Dica de Entrevista:** Sempre questione o entrevistador sobre a stack tecnológica homologada pela empresa (Ex: AWS vs Azure, Java vs Go). Evite se prender a provedores específicos logo de início; o foco deve ser na **solução arquitetural agnóstica**.
+>  Vou sempre questionar sobre a stack tecnológica homologada pela empresa (Ex: AWS vs Azure, Java vs Go). Evitando se prender a provedores específicos logo de início; o foco deve ser na **solução arquitetural agnóstica**.
 
 Neste guia, detalho como eu desenharia essa arquitetura, desde a modelagem do banco de dados até a resiliência em nuvem.
 
