@@ -246,6 +246,61 @@ flowchart TD
     style Ledger fill:#f1f8e9,stroke:#333
 ```
 
+### Sequência da Transação
+
+Para visualizar como a **Orquestração Síncrona Pessimista** se comporta na prática, o diagrama abaixo detalha o fluxo desde a captura no terminal (POS) até o commit atômico no banco de dados, incluindo a fase de validação e a garantia de entrega via Outbox.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant POS as POS / Adquirente
+    participant GW as API Gateway
+    participant Orch as Orchestrator
+    participant Identity as Identity Service
+    participant Fraud as Fraud Engine
+    participant Balance as Balance Service
+    participant Ledger as Ledger Service
+    participant DB as PostgreSQL (Master)
+    participant Kafka as Kafka Broker
+
+    Note over POS, DB: Fase de Validação (Síncrona)
+    POS->>GW: POST /v1/authorizations
+    GW->>Orch: Iniciar Orquestração
+    Orch->>Identity: Validar Cartão e Usuário
+    Identity-->>Orch: Status: Ativo (UserID: 123)
+    Orch->>Fraud: Analisar Risco (Score)
+    Fraud-->>Orch: Risco Baixo (Aprovado)
+    Orch->>Balance: Consultar Saldo Disponível
+    
+    alt Saldo Insuficiente
+        Balance-->>Orch: Erro: Saldo Insuficiente
+        Orch-->>GW: HTTP 422 Unprocessable Entity
+        GW-->>POS: Transação Negada (Motivo: Saldo)
+    else Saldo Suficiente
+        Balance-->>Orch: Saldo OK (R$ 150,00)
+
+        Note over POS, DB: Fase de Commit (Atômica - ACID)
+        Orch->>Ledger: Executar Lançamento Financeiro
+        Ledger->>DB: BEGIN TRANSACTION
+        Ledger->>DB: INSERT INTO ledger_entries (Débito)
+        Ledger->>DB: INSERT INTO outbox (Evento de Notificação)
+        Ledger->>DB: COMMIT
+        DB-->>Ledger: OK (Transação Confirmada)
+        Ledger-->>Orch: Sucesso
+
+        Orch-->>GW: HTTP 201 Created (AuthCode)
+        GW-->>POS: Resposta de Autorização (Aprovada)
+    end
+
+    Note over Ledger, Kafka: Processamento Assíncrono (Pós-Autorização)
+    rect fill:#f5f5f5
+        Note right of Ledger: Transactional Outbox Relay
+        DB->>Kafka: Publish "TransactionCreated"
+        Kafka->>Kafka: Notificar Usuário / BI / Audit
+    end
+```
+_Fluxo detalhado da transação garantindo atomicidade e baixa latência._
+
 ## Uma Jornada de Evolução Contínua
 
 Projetar um sistema de alta escala e missão crítica como uma Ledger financeira é um exercício constante de equilíbrio entre **baixa latência** e **consistência absoluta**. Ao focar em padrões agnósticos, desacoplamento inteligente e integridade transacional, criamos uma base resiliente capaz de suportar o crescimento do negócio e evoluir tecnologicamente.
