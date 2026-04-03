@@ -9,9 +9,9 @@ mermaid: true
 
 Estou iniciando uma nova jornada que é (tentar 🙂) tirar uma certificação Java. 
 
-Este post marca o início de uma série onde vou estar gerando conteudo com as coisas que acho legal trazer para o blog...
+Este post marca o início de uma série onde vou estar gerando conteudo com as coisas que acho legal trazer sobre o processo...
 
-Para começar, vamos analisar uma expressão que já vi em alguns simulados: `ladoa++ == ++ladoa`. Se você olhar rápido, pode pensar que, como ambos incrementam a mesma variável, o resultado deveria ser `true`.
+Para começar, vamos analisar uma expressão que já vi em alguns simulados: `ladoa++ == ++ladoa`. Se você olhar rápido, pode pensar que, como ambos incrementam a mesma variável, o resultado deveria ser `true`, mas não é o que ocorre... 
 
 ## O que ocorre
 
