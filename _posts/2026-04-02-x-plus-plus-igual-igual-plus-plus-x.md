@@ -1,5 +1,5 @@
 ---
-title: "Por que x++ == ++x é false no Java?"
+title: "x++ == ++x é true ou false no Java?"
 date: 2026-04-02 09:00:00 -0300
 categories: [Java, Certificacao]
 tags: [java, jvm, bytecode, increment]
@@ -7,15 +7,17 @@ render_with_liquid: false
 mermaid: true
 ---
 
-Estou iniciando uma nova jornada que é (tentar 🙂) tirar uma certificação Java. 
+Estou com uma nova meta: tentar 🙂 conquistar a certificação Java 25 (que ainda nem foi lançada — sim, isso mesmo).
 
-Este post marca o início de uma série onde vou estar gerando conteudo com as coisas que acho legal trazer sobre o processo...
+Normalmente, a Oracle leva cerca de 1 ano para disponibilizar a certificação após o lançamento oficial da versão. O Java 25, por exemplo, foi lançado em 16 de setembro de 2025.
 
-Para começar, vamos analisar uma expressão que já vi em alguns simulados: `x++ == ++x`. Se você olhar rápido, pode pensar que, como ambos incrementam a mesma variável, o resultado deveria ser `true`, mas não é o que ocorre... 
+Então este é o primeiro post de uma série onde vou compartilhar o que estou acho legal sobre o que estou aprendendo ao longo do caminho.
 
-## O que ocorre
+Para começar, vamos analisar uma pergunta que já vi em alguns simulados: `x++ == ++x` é `true` ou `false`?. Se você olhar rápido, pode pensar que, como ambos incrementam a mesma variável, o resultado deveria ser `true`, mas não é o que ocorre :) ... 
 
-O segredo não está apenas no valor final da variável, mas em **quando** o valor é entregue para a expressão que o utiliza.
+## Ordem da Avaliação da Expressão
+
+O comportamento não depende apenas do valor final da variável, mas do momento em que esse valor é fornecido à expressão.
 
 ```java
 class ComparacaoIncrement {
@@ -28,22 +30,20 @@ class ComparacaoIncrement {
 ```
 {: file="ComparacaoIncrement.java" }
 
-A execução resulta em `false` e o valor final de `x` é `71`. Para entender o porquê, precisamos olhar a sequência exata de operações na **Pilha de Operandos (Operand Stack)**.
+A execução resulta em `false` e o valor final de `x` é `71`. Para entender o porquê, vamos olhar na **Pilha de Operandos (Operand Stack)**.
 
-### Passo a Passo no Bytecode
+### Vamos extrair o bytecode
 
-Para ver bytecode estou usando: 
 
 ```bash
 javac ComparacaoIncrement.java && javap -c -v ComparacaoIncrement > ComparacaoIncrement.bytecode
 ```
 
-Isso mostra:
 
-- Constant Pool
-- Stack size
-- Local variables
-- Métodos detalhados
+compilamos e extraimos o bytecode com `javap` que vem com o jdk:
+
+- Bytecode (-c): Desmonta o código, exibindo as instruções bytecode reais.
+- Verboso (-v): Exibe informações detalhadas, incluindo tamanho da pilha e constantes.
 
 
 Aqui está o bytecode detalhado do método `main`:
@@ -107,17 +107,17 @@ flowchart LR
     S4 --- M4
 ```
 
-O resultado é `false` porque o Java avalia expressões da esquerda para a direita. 
+O resultado é `false` porque o Java faz o evaluate das expressões da esquerda para a direita. 
 
-1.  O `x++` avalia para `69` e coloca isso na pilha.
-2.  Como efeito colateral, `x` vira `70`.
+1.  O `x++` é colocado na pilha com `69`
+2.  Como depois aplica o 1 com isso `x` vira `70`.
 3.  Em seguida, o `++x` incrementa `x` para `71` e coloca `71` na pilha.
 4.  A comparação final é `69 == 71`.
 
-> Lembre-se que o operador de igualdade `==` não é um ponto de sincronização. Ele apenas compara os valores que já foram resolvidos e colocados na pilha de operandos seguindo a precedência e a ordem de avaliação (esquerda para a direita).
+> O operador de igualdade `==` não é um ponto de sincronização, ele apenas compara os valores que já foram resolvidos e colocados na pilha de operandos seguindo a precedência e a ordem de avaliação (esquerda para a direita).
 {: .prompt-tip }
 
-Entender o bytecode não serve apenas para passar em provas, mas para compreender como o código que escrevemos é realmente interpretado pela máquina que o executa.
+Você não precisa entender todo o bytecode ou avaliá-lo a cada nova versão do seu software, mas pelo menos saber que é possível avaliá-lo caso queira entender algum comportamento estranho...
 
 
 ## Referencias
