@@ -84,7 +84,17 @@ O Sharding traz uma complexidade absurda, e o **Rebalancing** (redistribuição 
 Muitas vezes, a solução não é escalar o banco, mas sim tirar a carga dele.
 
 - **Caching (Redis/Memcached):** Salvar resultados de queries custosas na memória. Se o dado não muda a cada segundo, ele não deveria estar sendo buscado no disco.
-- **CQRS (Command Query Responsibility Segregation):** Separar totalmente o modelo de escrita do modelo de leitura. As leituras podem ser feitas em um banco otimizado para busca (Elasticsearch) ou um banco de documentos (MongoDB), enquanto as escritas permanecem no SQL transacional.
+- **CQRS (Command Query Responsibility Segregation):** Separar totalmente o modelo de escrita do modelo de leitura. As leituras podem ser feitas em um banco otimizado para busca (Elasticsearch) ou um banco de documentos (**MongoDB**).
+
+### CQRS: Sincronização e Consistência Eventual
+O maior desafio do CQRS é manter o modelo de leitura sincronizado com a escrita. 
+1. **Sincronização por Eventos:** Toda vez que um dado é salvo no SQL, um evento é disparado para um broker (Kafka). Um consumidor lê esse evento e atualiza o MongoDB.
+2. **Consistência Eventual:** Como o processo é assíncrono, existe um intervalo onde o usuário salva o dado mas não o vê na busca imediata. Isso exige que a UI seja resiliente (ex: mostrar um estado de "processando").
+
+### MongoDB Tuning em Alta Escala
+Se o seu modelo de leitura usa MongoDB, a performance depende de dois pilares:
+- **Índices Compostos:** Se você busca por `{ lojaId: 1, status: 'ATIVO' }`, um índice apenas em `lojaId` não é suficiente. Use índices compostos para cobrir seus padrões de consulta mais comuns.
+- **Aggregation Framework:** Evite trazer milhares de documentos para o backend para processar. Use `$facet` para paginação e metadados em uma única chamada, ou `$lookup` (com cautela) para joins entre coleções.
 
 ---
 

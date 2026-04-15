@@ -67,6 +67,17 @@ public class PaymentService {
 2.  **SRP (Single Responsibility):** Cada classe só cuida de um tipo de processamento.
 3.  **Facilidade de Extensão:** Quer adicionar "Cripto"? Basta criar uma nova classe que implementa a interface. Você não toca no `PaymentService`.
 
+---
+
+## Builder e Observer no Java
+
+Embora o Strategy resolva o caos dos `if-else`, outros padrões GoF são essenciais para um código idiomático e limpo:
+
+- **Builder Pattern:** Essencial para criar objetos complexos e imutáveis sem construtores gigantes. No Java moderno, o uso de `Records` combinado com o padrão Builder (muitas vezes via **Lombok** `@Builder`) garante fluidez e segurança.
+- **Observer Pattern:** Fundamental para sistemas orientados a eventos. O Spring Framework utiliza isso extensivamente com o `ApplicationEventPublisher`. Em vez de um serviço chamar diretamente outro, ele publica um evento e os "Observers" interessados reagem de forma desacoplada.
+
+---
+
 ## Dica: Strategy + Factory
 
 Para evitar percorrer a lista em todo processamento, você pode criar uma `Factory` que mapeia o tipo para a estratégia em um `Map` no momento do startup da aplicação.

@@ -23,6 +23,24 @@ Imagine um Tópico do Kafka como uma rodovia. Se houver apenas uma faixa, todos 
 Se você tem um tópico com 4 partições e um grupo de consumidores com 2 instâncias, cada instância lerá de 2 partições. Se você subir mais 2 instâncias (total de 4), cada uma lerá de 1 partição.
 **Mas atenção:** Se você subir uma 5ª instância, ela ficará **ociosa**. Você não pode ter mais consumidores em um grupo do que partições no tópico.
 
+## Funcionamento Interno: O Protocolo de Replicação
+
+Para garantir que os dados não se percam, o Kafka utiliza um modelo de replicação baseado em **Líder (Leader)** e **Seguidores (Followers)**.
+
+1.  **O Papel do Controller:** Um dos brokers do cluster é eleito como o Controller. Ele é o cérebro do cluster, responsável por gerenciar estados de partições, tópicos e realizar a eleição de novos líderes caso um broker caia.
+2.  **ISR (In-Sync Replicas):** Nem todo seguidor é igual. O ISR é o conjunto de réplicas que estão "em dia" com o líder. Se o líder cair, apenas uma réplica do ISR pode assumir a liderança para evitar perda de dados.
+3.  **High Watermark:** É o offset da última mensagem que foi replicada com sucesso para todas as réplicas do ISR. O consumidor só consegue ler mensagens até este ponto, garantindo que ele nunca leia algo que possa "desaparecer" se o líder falhar.
+
+## Zookeeper e KRaft
+
+Historicamente, o Kafka dependia do Apache ZooKeeper para armazenar metadados e gerenciar o Controller. Isso criava um gargalo de escalabilidade e complexidade operacional (o famoso "metadados sobre metadados").
+
+Com a migração para o **KRaft (Kafka Raft Metadata Mode)**, o Kafka passa a gerenciar seus próprios metadados internamente em um tópico especial. 
+- **Vantagem:** O cluster escala para milhões de partições de forma muito mais eficiente.
+- **Simplificação:** Menos um componente móvel para monitorar e manter na sua infraestrutura.
+
+---
+
 ## O Temido Rebalanceamento (Rebalance)
 
 Sempre que um consumidor entra ou sai do grupo (ou cai), o Kafka redistribui as partições entre os sobreviventes.

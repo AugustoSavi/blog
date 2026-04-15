@@ -10,11 +10,57 @@ Você já passou pela situação de ver sua aplicação Java consumir 8GB de RAM
 
 Muitas vezes, o dimensionamento de recursos da JVM é tratado como alquimia ou tentativa e erro. No entanto, existe uma ciência por trás de como a Java Virtual Machine utiliza a memória do sistema operacional e como você pode calcular os limites ideais para evitar o temido OOM (Out Of Memory) Killer do Linux.
 
-## O Mito do "Quanto mais, melhor"
+## Nem sempre mais é melhor
 
 Existe uma crença comum de que memória sobrando é sempre bom. Na JVM, isso é parcialmente falso. Um Heap excessivamente grande pode resultar em pausas de Garbage Collection muito mais longas (Stop-the-World), pois o GC terá que varrer um oceano de objetos para decidir o que limpar. 
 
 O objetivo não é ter memória sobrando, mas sim ter o **equilíbrio** entre throughput e latência.
+
+---
+
+## Diagnóstico Avançado: JFR e Mission Control
+
+Antes de sair alterando flags, você precisa de dados reais. O **Java Flight Recorder (JFR)** é o "caixa-preta" da sua aplicação.
+
+- **Baixo Overhead:** Diferente de profiladores tradicionais, o JFR está integrado no coração da JVM. Ele coleta dados com menos de 1% de impacto na performance, sendo seguro para rodar em produção.
+- **JDK Mission Control (JMC):** É a interface gráfica que permite analisar os arquivos `.jfr`. Com ela, você visualiza alocações de memória, pausas de GC e até latência de I/O de arquivos.
+
+```bash
+# Exemplo: Iniciar uma gravação de 1 minuto em um processo rodando
+jcmd <pid> JFR.start duration=60s filename=recording.jfr
+```
+
+---
+
+## Anatomia de um Thread Dump
+
+Quando sua aplicação "congela", o primeiro passo é tirar um **Thread Dump**. Ele é uma fotografia instantânea do que cada thread está fazendo. Existem várias formas de realizar essa captura, dependendo do seu acesso ao ambiente:
+
+1.  **jcmd (Recomendado):** A ferramenta mais moderna e canivete-suíço da JVM.
+    ```bash
+    jcmd <pid> Thread.print > threaddump.txt
+    ```
+2.  **jstack:** A ferramenta clássica dedicada a threads.
+    ```bash
+    jstack -l <pid> > threaddump.txt
+    ```
+3.  **Sinal do SO (Linux/Unix):** Útil quando as ferramentas do JDK não estão disponíveis ou o processo está maluco. O dump é enviado para o `stdout`.
+    ```bash
+    kill -3 <pid>
+    ```
+4.  **Spring Boot Actuator:** Se você tiver o Actuator habilitado, pode baixar o dump via HTTP sem precisar de acesso ao terminal do servidor:
+    ```bash
+    curl http://localhost:8080/actuator/threaddump
+    ```
+
+### Identificando Deadlocks
+Um deadlock ocorre quando a Thread A segura o Lock 1 e espera pelo Lock 2, enquanto a Thread B segura o Lock 2 e espera pelo Lock 1. O Thread Dump mostrará explicitamente:
+`Found one Java-level deadlock`.
+
+### Contenção de Monitores
+Se você vir muitas threads no estado `BLOCKED (on object monitor)`, significa que elas estão disputando o mesmo recurso sincronizado (`synchronized`). Isso é um gargalo clássico de escalabilidade.
+
+---
 
 ## Anatomia da Memória Além do Heap
 

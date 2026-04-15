@@ -49,7 +49,21 @@ flowchart TD
     style Transação Local fill:#f9f9f9,stroke:#333,stroke-dasharray: 5 5
 ```
 
-## Implementação Prática
+---
+
+## Outra opção Event Sourcing?
+
+Enquanto o Outbox Pattern usa uma tabela auxiliar para garantir que o estado e o evento sejam salvos juntos, o **Event Sourcing** leva essa ideia ao extremo: **o evento é o estado**.
+
+Em vez de salvar o registro atual de um `Order` em uma tabela, você salva a sequência de eventos que levaram a esse estado: `OrderCreated`, `PaymentReceived`, `OrderShipped`.
+
+- **Reconstrução de Estado:** O estado atual da aplicação é reconstruído dando um "replay" em todos os eventos de um determinado ID (Aggregate ID) a partir do zero.
+- **Auditabilidade Absoluta:** Você não tem apenas o "valor atual" do saldo, mas cada centavo que entrou e saiu, com timestamp e contexto. É o modelo padrão de sistemas bancários.
+- **Diferença do Outbox:** No Outbox, a tabela de eventos é um "subproduto" para integração. No Event Sourcing, a tabela de eventos (Event Store) é a **única fonte da verdade**.
+
+---
+
+## Implementação Prática do Outbox
 
 Vamos visualizar como seria a estrutura de uma entidade de Outbox e o serviço que a utiliza.
 

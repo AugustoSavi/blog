@@ -25,8 +25,19 @@ São registros de eventos específicos que aconteceram no sistema.
 
 ## 3. Traces (O "Onde?")
 Mostram o caminho de uma única requisição através de todos os microserviços.
-- **Ferramentas:** Jaeger, Zipkin, AWS X-Ray.
-- **Uso:** Identificar qual serviço na cadeia está causando lentidão. "A requisição demorou 2 segundos porque o Serviço de Inventário demorou 1.8s".
+- **Ferramentas:** **Jaeger**, Zipkin, AWS X-Ray.
+- **OpenTelemetry:** Para gerar esses traces de forma agnóstica é o OpenTelemetry (OTel). Ele permite que você instrumente seu código uma vez e envie os dados para qualquer provedor.
+
+---
+
+## Troubleshooting de Latência
+
+O Tracing Distribuído é a ferramenta definitiva para resolver o mistério do "Por que está lento?". 
+- **Spans:** Cada Trace é composto por múltiplos "Spans" (intervalos de tempo). 
+- **Causalidade:** Se o Span do `Serviço A` dura 2s, e ele contém um Span do `Serviço B` de 1.8s, você sabe instantaneamente que o culpado é o `Serviço B`.
+- **Gargalos de I/O:** Muitas vezes, o culpado não é o código, mas uma query SQL lenta ou uma chamada de rede para um serviço legado. O Trace expõe esse tempo de espera de forma visual.
+
+---
 
 ## Contexto de Uso (ex: Datadog)
 

@@ -12,6 +12,24 @@ Desenvolvedores participam ativamente de **Code Reviews**. Mas, revisar código 
 
 O Code Review pode ser o lugar onde o projeto trava ou onde o time aprende. A pessoa que esta revisando deve ser a alavanca que eleva a barra de qualidade sem criar atritos desnecessários.
 
+---
+
+## Além do Código
+
+Um engenheiro não olha apenas para o `diff` do dia.
+
+### 1. Roadmaps Técnicos
+A evolução da arquitetura não deve parar a entrega de produto.  planejamentos de **Roadmaps Técnicos** que permitem mudanças estruturais (ex: migração de banco, quebra de serviço) de forma incremental. Cada entrega de funcionalidade deve ser um pequeno passo em direção à arquitetura desejada, evitando o "Big Bang Rewrite".
+
+### 2. Mitigação de Riscos Arquiteturais
+Identificar **Pontos Únicos de Falha (SPOF)** antes que eles ocorram. 
+- "E se esse broker de mensagens cair?"
+- "O que acontece se a latência dessa API externa triplicar?"
+- "Temos um gargalo de escrita neste Shard específico?"
+Mitigar riscos significa projetar redundância, timeouts e fallbacks como parte do design original, e não como um remendo após o incidente.
+
+---
+
 ## 1. O que NÃO revisar (Deixe para a máquina)
 - Indentação e espaços.
 - Nomes de variáveis (se estiverem seguindo o padrão).

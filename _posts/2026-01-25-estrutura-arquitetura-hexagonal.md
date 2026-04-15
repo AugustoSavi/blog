@@ -51,6 +51,26 @@ graph LR
     R_INT --> KAFKA_OUT
 ```
 
+---
+
+## Context Mapping e Limites
+
+Precisamos entender onde o hexágono termina. No DDD (Domain-Driven Design), usamos o **Context Mapping** para desenhar essas fronteiras.
+
+- **Bounded Context:** Cada hexágono deve representar um contexto delimitado (ex: Pedidos, Pagamentos). Tentar colocar tudo em um só "super-hexágono" é o caminho para um monolito distribuído.
+- **Shared Kernel:** Quando dois contextos compartilham o mesmo modelo (ex: a entidade `User` é a mesma para todos). Use com cautela extrema.
+- **Customer-Supplier:** Uma relação clara de dependência onde o "Supplier" fornece dados para o "Customer".
+
+## Anti-Corruption Layer (ACL)
+
+Quando seu hexágono precisa falar com um sistema legado "sujo" ou uma API de terceiros com um modelo de dados confuso, você usa uma **Anti-Corruption Layer (ACL)**.
+
+A ACL é um Adapter de Saída especializado que não apenas traduz protocolos, mas **traduz semântica**. 
+- O Legacy Service chama o campo de `customer_id` de `id_001_v3`.
+- Sua ACL recebe isso e converte para o seu objeto de domínio `CustomerId`.
+- **Objetivo:** Impedir que o "caos" do sistema externo vaze para dentro do seu Core puro.
+
+---
 
 ## A Estrutura de Pastas Sugerida
 
@@ -68,6 +88,7 @@ src/main/java/com/company/benefit
     ├── adapters/
     │   ├── db/         <-- Implementações JPA/NoSQL
     │   ├── web/        <-- Controllers REST
+    │   ├── external/   <-- ACLs para sistemas externos
     │   └── messaging/  <-- Consumidores Kafka/Rabbit
     └── config/         <-- Configurações de Beans do Framework
 ```

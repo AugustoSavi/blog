@@ -24,7 +24,22 @@ O **Ledger Service** é o guardião da verdade financeira. Ele não apenas armaz
 - **Imutabilidade:** Lançamentos nunca são editados ou excluídos. Erros são corrigidos com novos lançamentos de estorno.
 - **Hierarquia de Contas:** Cada grupo de benefício (Refeição, Alimentação) é tratado como uma sub-conta independente vinculada ao `wallet_id` do usuário.
 
-### A Fonte da Verdade e a Performance (Snapshots)
+---
+
+## 2. Comunicação Interna: gRPC vs. REST
+
+Em um sistema de alta escala, a forma como os microserviços conversam entre si impacta diretamente a latência final.
+
+- **REST (JSON over HTTP/1.1):** Utilizado para a API pública (Borda). É universal, fácil de depurar e possui suporte nativo em qualquer cliente. Porém, o overhead do JSON (texto) e a falta de multiplexação no HTTP/1.1 podem ser gargalos em comunicações internas intensas.
+- **gRPC (Protobuf over HTTP/2):** Para a comunicação entre o `Orchestrator` e os serviços internos (`Ledger`, `Balance`). 
+    - **Performance:** Utiliza serialização binária (**Protobuf**), muito mais leve e rápida que JSON.
+    - **Contratos Fortes:** O contrato é definido em arquivos `.proto`, garantindo que cliente e servidor falem exatamente a mesma língua.
+    - **Multiplexação:** O HTTP/2 permite múltiplas requisições na mesma conexão TCP, reduzindo drasticamente o overhead de handshake.
+
+---
+
+## 3. Estratégia de API Gateway e Identity Service
+
 Embora o saldo seja o resultado da `SUM()` de lançamentos, somar milhares de transações a cada autorização destruiria a performance.
 - **A Solução (Snapshots):** Mantemos uma tabela de `balance_snapshots`. Utilizamos o valor do último snapshot consolidado e somamos apenas os lançamentos que ocorreram *após* a data desse snapshot.
     - *Exemplo:* Se o último snapshot diz R$ 100,00 e houve um gasto recente de R$ 20,00, o saldo é `100 - 20 = 80`. Isso evita processar anos de histórico em milissegundos.

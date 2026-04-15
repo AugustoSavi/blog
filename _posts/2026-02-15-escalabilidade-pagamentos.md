@@ -30,7 +30,10 @@ Se o seu banco MySQL central está sofrendo, você precisa dividir para conquist
 
 Consultar o saldo no banco em cada passada de cartão é caro.
 - Use um **Redis** para manter o saldo atualizado.
-- Quando uma transação ocorre, você atualiza o Redis e envia um evento para atualizar o banco de forma assíncrona (ou usa uma transação atômica se a consistência forte for exigida no momento).
+- Quando uma transação ocorre, você atualiza o Redis e o banco de forma síncrona (ou utiliza uma transação atômica) para garantir que o saldo "visto" seja sempre o real.
+
+{: .prompt-warning }
+> **Por que não Write-behind?** Embora o modelo de *Write-behind* (escrever apenas no cache e sincronizar com o banco de forma assíncrona depois) ofereça a maior performance, ele é extremamente arriscado para saldos. Se o cache (Redis) falhar antes da persistência no banco, o dinheiro "desaparece" do sistema, gerando uma inconsistência financeira irreparável.
 
 ## Estratégia 4: Rate Limiting e Backpressure
 

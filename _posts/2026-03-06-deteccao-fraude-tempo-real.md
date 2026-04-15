@@ -58,6 +58,16 @@ stream
     .addSink(new AlertSink()); // Alerta de "Viagem Impossível"
 ```
 
+### Kafka Streams: Processamento de Estado com KTables
+
+Enquanto o Flink é excelente para janelas complexas, o **Kafka Streams** brilha na simplicidade de gerenciar estados locais.
+
+- **KStream:** Representa um fluxo infinito de eventos (ex: cada nova transação).
+- **KTable:** Representa o estado atual de um conjunto de chaves (ex: o saldo atual ou o último país visitado pelo usuário). É como uma "view materializada" do log de eventos.
+- **GlobalKTable:** Uma tabela que é replicada integralmente em todas as instâncias da sua aplicação. É ideal para dados de referência pequenos que mudam pouco, como uma lista de MCCs bloqueados ou limites por categoria de cartão. Isso permite que você faça JOINS ultra-rápidos sem precisar re-particionar os dados do KStream principal.
+
+Ao unir um `KStream` de transações com uma `KTable` de perfis de usuários, você consegue injetar contexto em tempo real na sua decisão de fraude sem nenhuma chamada externa de banco de dados.
+
 ## Estratégias de Verificação: O Desafio da Latência
 
 ### A. Feature Store (Redis/DynamoDB)

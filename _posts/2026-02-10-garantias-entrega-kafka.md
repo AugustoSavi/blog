@@ -27,6 +27,23 @@ O "Santo Graal". Garante que a mensagem chegue e seja processada apenas uma vez,
 - **Como:** Usa transações no Kafka e produtores idempotentes (`enable.idempotence=true`).
 - **Uso:** Sistemas financeiros críticos. É mais pesado e exige configurações precisas tanto no produtor quanto no consumidor.
 
+---
+
+## Otimização: Throughput vs Latência
+
+Configurar as garantias de entrega é apenas metade da batalha. A outra metade é decidir o quão rápido você quer que essas mensagens viajem. No Kafka, existe um trade-off clássico entre **vazão (throughput)** e **atraso (latency)**.
+
+### Tuning do Produtor
+- **`batch.size`:** Define o tamanho máximo (em bytes) de uma "sacola" de mensagens. Sacolas maiores aumentam o throughput (mais dados por requisição), mas aumentam a latência (esperar a sacola encher).
+- **`linger.ms`:** É o tempo que o produtor espera por mais mensagens antes de enviar o batch atual. Se você definir `linger.ms=5`, o produtor esperará até 5ms para acumular mensagens. Isso reduz drasticamente o número de requests enviadas, melhorando a eficiência do broker às custas de 5ms de latência.
+- **`compression.type`:** Usar `snappy` ou `lz4` reduz o tamanho dos dados na rede e no disco, aumentando o throughput, mas consome um pouco mais de CPU do produtor para comprimir.
+
+### Tuning do Consumidor
+- **`fetch.min.bytes`:** O consumidor só recebe dados se houver pelo menos X bytes disponíveis no broker. Aumentar isso economiza CPU e rede, mas aumenta a latência.
+- **`fetch.max.wait.ms`:** Quanto tempo o consumidor espera pelo `fetch.min.bytes` antes de desistir e pegar o que tiver disponível.
+
+---
+
 ## Por que At-least-once é o padrão?
 
 Porque é o equilíbrio perfeito entre performance e segurança. No entanto, ele coloca a responsabilidade no **Consumidor**. Se o seu consumidor recebe uma mensagem de "Cobrar R$ 50", ele deve verificar se aquele ID de transação já foi processado antes de agir.
