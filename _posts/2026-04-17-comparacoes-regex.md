@@ -354,7 +354,68 @@ class SemRegex {
 
 ## Comparação de Resultados
 
-Abaixo, os resultados obtidos após processar um arquivo com **1.000.000 de registros** em cada modalidade 10 vezes.
+Abaixo, os resultados detalhados obtidos após processar um arquivo com **1.000.000 de registros** em cada modalidade em 10 execuções independentes.
+
+| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
+| :--- | :---: | :---: | :---: | :---: |
+| **matches com String** | #1 | 4.56s | 3308.36ms | 1175.49 MB |
+| matches com String | #2 | 4.30s | 3205.98ms | 1170.77 MB |
+| matches com String | #3 | 4.42s | 3306.97ms | 1431.42 MB |
+| matches com String | #4 | 4.38s | 3273.83ms | 1156.36 MB |
+| matches com String | #5 | 4.46s | 3255.76ms | 1234.29 MB |
+| matches com String | #6 | 4.70s | 3482.45ms | 1247.73 MB |
+| matches com String | #7 | 4.42s | 3152.46ms | 1129.54 MB |
+| matches com String | #8 | 4.60s | 3360.58ms | 1164.21 MB |
+| matches com String | #9 | 4.63s | 3460.75ms | 1280.86 MB |
+| matches com String | #10 | 4.51s | 3305.28ms | 1239.43 MB |
+
+
+| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Pattern.compile** | #1 | 2.84s | 1718.56ms | 449.47 MB |
+| Pattern.compile | #2 | 2.65s | 1629.31ms | 429.09 MB |
+| Pattern.compile | #3 | 2.49s | 1480.55ms | 454.18 MB |
+| Pattern.compile | #4 | 2.64s | 1577.35ms | 430.80 MB |
+| Pattern.compile | #5 | 2.68s | 1598.89ms | 466.20 MB |
+| Pattern.compile | #6 | 2.73s | 1658.13ms | 450.72 MB |
+| Pattern.compile | #7 | 2.66s | 1652.95ms | 451.61 MB |
+| Pattern.compile | #8 | 2.57s | 1561.85ms | 441.00 MB |
+| Pattern.compile | #9 | 2.57s | 1559.94ms | 436.63 MB |
+| Pattern.compile | #10 | 2.64s | 1540.88ms | 429.25 MB |
+
+
+| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Sem Regex** | #1 | 1.85s | 832.57ms | 364.95 MB |
+| Sem Regex | #2 | 2.10s | 962.74ms | 343.99 MB |
+| Sem Regex | #3 | 2.17s | 1037.10ms | 310.91 MB |
+| Sem Regex | #4 | 2.05s | 981.12ms | 341.37 MB |
+| Sem Regex | #5 | 1.93s | 901.66ms | 342.00 MB |
+| Sem Regex | #6 | 1.87s | 833.01ms | 328.56 MB |
+| Sem Regex | #7 | 1.88s | 807.12ms | 337.92 MB |
+| Sem Regex | #8 | 2.22s | 1102.72ms | 321.79 MB |
+| Sem Regex | #9 | 1.87s | 816.83ms | 334.28 MB |
+| Sem Regex | #10 | 1.97s | 933.34ms | 327.39 MB |
+
+
+### Tempo Interno
+
+_Resultado obtido com `(end - start) / 1_000_000.0`_
+
+Enquanto as tabela acima mostra o custo que o sistema operacional percebe, a tabela abaixo isola apenas o tempo gasto dentro do loop de processamento do Java, descartando o tempo de inicialização da JVM.
+
+| Execução | Sem Compilar (ms) | Com Compilar (ms) | Sem Regex (ms) |
+| :---: | :---: | :---: | :---: |
+| #1 | 3308.36 ms | 1718.56 ms | 832.57 ms |
+| #2 | 3205.98 ms | 1629.31 ms | 962.74 ms |
+| #3 | 3306.97 ms | 1480.55 ms | 1037.10 ms |
+| #4 | 3273.83 ms | 1577.35 ms | 981.12 ms |
+| #5 | 3255.76 ms | 1598.89 ms | 901.66 ms |
+| #6 | 3482.45 ms | 1658.13 ms | 833.01 ms |
+| #7 | 3152.46 ms | 1652.95 ms | 807.12 ms |
+| #8 | 3360.58 ms | 1561.85 ms | 1102.72 ms |
+| #9 | 3460.75 ms | 1559.94 ms | 816.83 ms |
+| #10 | 3305.28 ms | 1540.88 ms | 933.34 ms |
 
 ![Tempo de Execução](/assets/img/comparacao-tempo-regex.png){: .shadow .rounded-10 }
 _Comparação do tempo total de execução em segundos._
@@ -362,8 +423,28 @@ _Comparação do tempo total de execução em segundos._
 ![Uso de Memória](/assets/img/comparacao-memoria-regex.png){: .shadow .rounded-10 }
 _Impacto no pico de consumo de memória (RSS)._
 
-> **Disclaimer:** Estes resultados foram obtidos utilizando o comando `/usr/bin/time -v`. É importante notar que esses valores incluem o tempo total de carregamento da JVM, o carregamento de todas as classes, a leitura do arquivo em disco e a saída no console. Em sistemas de longa duração (como serviços web), a diferença real é ainda mais drástica, pois o overhead inicial da JVM é diluído ao longo do tempo.
+> **Disclaimer:** Estes resultados presentes nas imagens foram obtidos utilizando o comando `/usr/bin/time -v`. É importante notar que esses valores incluem o tempo total de carregamento da JVM, o carregamento de todas as classes, a leitura do arquivo em disco e a saída no console. Em sistemas de longa duração (como serviços web), a diferença real é ainda mais drástica, pois o overhead inicial da JVM é diluído ao longo do tempo.
 {: .prompt-info }
+
+### Ambiente de Teste
+
+Para garantir a reprodutibilidade dos resultados, abaixo estão os detalhes do ambiente onde os benchmarks foram executados:
+
+```text
+OS: Ubuntu 24.04.3 LTS x86_64  
+Kernel: 6.17.0-20-generic 
+Shell: bash 5.2.21 
+CPU: Intel i5-7200U (4) @ 2.500GHz 
+GPU: Intel HD Graphics 620 
+Memory: 19876MiB
+```
+
+**Versão do Java:**
+```text
+openjdk version "25.0.2" 2026-01-20
+OpenJDK Runtime Environment (build 25.0.2+10-Ubuntu-124.04)
+OpenJDK 64-Bit Server VM (build 25.0.2+10-Ubuntu-124.04, mixed mode, sharing)
+```
 
 ### Análise dos Dados
 
@@ -380,7 +461,6 @@ Ao escrever `isAlphaNumeric(char c)`, você está dando uma instrução direta a
 ## Dicas finais
 
 1.  Se você vai usar uma regex mais de uma vez, **compile-a** em uma constante.
-2.  **Validações Críticas:** Se o seu código está dentro de um loop que processa milhões de registros (ETLs, processamento de logs, gateways de pagamento), **abandone o regex** em favor de lógica manual.
+2.  **Validações Críticas:** Se o seu código está dentro de um loop que processa milhões de registros (ETLs, processamento de logs, gateways de pagamento), tente montar uma pipeline **sem o regex** pode te trazer muitos benefícios.
 3.  **Legibilidade vs Performance:** Use regex para regras complexas onde o código manual se tornaria ilegível ou propenso a erros. O ganho de performance só justifica a complexidade extra se houver volume de dados suficiente.
 
-Ao entender como a JVM lida com essas abstrações, você ganha o poder de decidir quando a conveniência vale o custo e quando a eficiência bruta deve prevalecer.
