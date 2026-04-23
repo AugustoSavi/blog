@@ -1,5 +1,5 @@
 ---
-title: "Comparação String Match, Pattern.compile e Validação Manual"
+title: "Comparação String Match, Pattern Compile e Validação Manual"
 date: 2026-04-21 00:00:01 -0300
 categories: [Java, Performance]
 tags: [regex, jvm, optimization, benchmark]
