@@ -12,7 +12,7 @@ render_with_liquid: false
 
 No dia a dia a conveniência muitas vezes atropela a performance. Um dos exemplos mais comuns é montar uma expressão no `String.matches()` e nunca mais mexer depois que fez funcionar. Essa abordagem pode se tornar um gargalo crítico em sistemas de alto rendimento, especialmente quando lidamos com grandes volumes de dados.
 
-Neste post, vamos analisar três abordagens para validação de CNPJs (incluindo cálculo de dígitos verificadores e suporte a caracteres alfanuméricos): o uso `String.matches`, `Pattern.compile` e a validação manual sem expressões regulares.
+Neste post, vamos analisar quatro abordagens para validação de CNPJs (incluindo cálculo de dígitos verificadores e suporte a caracteres alfanuméricos): o uso `String.matches`, `Pattern.compile`, validação manual sem expressões regulares e uma versão otimizada da validação manual.
 
 ## Recompilação em toda execução
 
@@ -54,7 +54,7 @@ class SemCompilar {
   private static final int VALOR_BASE = (int) '0';
   private static final int[] PESOS_DV = { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-  private static boolean isValid(String cnpj) {
+  public static boolean isValid(String cnpj) {
     if (cnpj != null) {
       cnpj = removeCaracteresFormatacao(cnpj);
       if (isCnpjFormacaoValidaComDV(cnpj)) {
@@ -136,12 +136,13 @@ class ComCompilar {
 
   private static final int[] PESOS_DV = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
 
+  // Patterns pré-compilados
   private static final Pattern PADRAO_BASE = Pattern.compile("^[A-Z\\d]{12}$");
   private static final Pattern PADRAO_COMPLETO = Pattern.compile("^[A-Z\\d]{12}\\d{2}$");
   private static final Pattern PADRAO_ZERADO = Pattern.compile("^0+$");
   private static final Pattern PADRAO_FORMATACAO = Pattern.compile("[./-]");
 
-  private static boolean isValid(String cnpj) {
+  public static boolean isValid(String cnpj) {
     if (cnpj == null) return false;
 
     cnpj = removeCaracteresFormatacao(cnpj);
@@ -232,7 +233,7 @@ class SemRegex {
   private static final int VALOR_BASE = '0';
   private static final int[] PESOS_DV = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
 
-  private static boolean isValid(String cnpj) {
+  public static boolean isValid(String cnpj) {
     if (cnpj == null) return false;
 
     cnpj = removeCaracteresFormatacao(cnpj);
@@ -316,6 +317,7 @@ class SemRegex {
       if (c != '0') allZero = false;
     }
 
+    // últimos 2 devem ser dígitos
     for (int i = 12; i < 14; i++) {
       char c = cnpj.charAt(i);
 
@@ -352,70 +354,109 @@ class SemRegex {
 }
 ```
 
+### 4. Sem Regex (Otimizado)
+
+Esta versão tenta levar a otimização manual ao extremo. Eliminamos a criação de objetos intermediários (como `String` e `StringBuilder`), utilizando arrays de caracteres fixos, desenrolamos loops (loop unrolling) para o cálculo dos DVs e fundimos a extração de caracteres com a validação básica.
+
+```java
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.stream.Stream;
+
+public class SemRegexOtimizado {
+
+    private static final int TAMANHO_CNPJ = 14;
+
+    public static boolean isValid(String input) {
+        if (input == null) return false;
+
+        char[] c = new char[TAMANHO_CNPJ];
+        int j = 0;
+
+        // extração + validação + early exit
+        for (int i = 0; i < input.length() && j < TAMANHO_CNPJ; i++) {
+            char ch = input.charAt(i);
+
+            if ((ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'Z')) {
+                c[j++] = ch;
+            }
+        }
+
+        if (j != TAMANHO_CNPJ) return false;
+
+        // todos zeros check inline (sem loop separado)
+        boolean allZero = true;
+        for (int i = 0; i < TAMANHO_CNPJ; i++) {
+            if (c[i] != '0') {
+                allZero = false;
+                break;
+            }
+        }
+        if (allZero) return false;
+
+        // cálculo direto DV1 (loop unrolled)
+        int s =
+            (c[0]-'0') * 5 +
+            (c[1]-'0') * 4 +
+            (c[2]-'0') * 3 +
+            (c[3]-'0') * 2 +
+            (c[4]-'0') * 9 +
+            (c[5]-'0') * 8 +
+            (c[6]-'0') * 7 +
+            (c[7]-'0') * 6 +
+            (c[8]-'0') * 5 +
+            (c[9]-'0') * 4 +
+            (c[10]-'0') * 3 +
+            (c[11]-'0') * 2;
+
+        int r = s - 11 * (s / 11);
+        int dv1 = (r < 2) ? 0 : 11 - r;
+
+        // cálculo direto DV2
+        s =
+            (c[0]-'0') * 6 +
+            (c[1]-'0') * 5 +
+            (c[2]-'0') * 4 +
+            (c[3]-'0') * 3 +
+            (c[4]-'0') * 2 +
+            (c[5]-'0') * 9 +
+            (c[6]-'0') * 8 +
+            (c[7]-'0') * 7 +
+            (c[8]-'0') * 6 +
+            (c[9]-'0') * 5 +
+            (c[10]-'0') * 4 +
+            (c[11]-'0') * 3 +
+            dv1 * 2;
+
+        r = s - 11 * (s / 11);
+        int dv2 = (r < 2) ? 0 : 11 - r;
+
+        return dv1 == (c[12] - '0') &&
+               dv2 == (c[13] - '0');
+    }
+
+    void main(String[] args) throws IOException {
+        var file = args.length > 0 ? args[0] : "data.txt";
+        var entries = new HashMap<String, Boolean>();
+
+        long start = System.nanoTime();
+
+        try (Stream<String> stream = Files.lines(Paths.get(file))) {
+          stream.forEach(item -> entries.put(item, isValid(item)));
+        }
+
+        long end = System.nanoTime();
+
+        IO.println("Tempo de execução: " + (end - start) / 1_000_000.0 + " ms, itens mapeados: " + entries.size());
+    }
+}
+```
+
 ## Comparação de Resultados
 
-Abaixo, os resultados detalhados obtidos após processar um arquivo com **1.000.000 de registros** em cada modalidade em 10 execuções independentes.
-
-| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
-| :--- | :---: | :---: | :---: | :---: |
-| **matches com String** | #1 | 4.56s | 3308.36ms | 1175.49 MB |
-| matches com String | #2 | 4.30s | 3205.98ms | 1170.77 MB |
-| matches com String | #3 | 4.42s | 3306.97ms | 1431.42 MB |
-| matches com String | #4 | 4.38s | 3273.83ms | 1156.36 MB |
-| matches com String | #5 | 4.46s | 3255.76ms | 1234.29 MB |
-| matches com String | #6 | 4.70s | 3482.45ms | 1247.73 MB |
-| matches com String | #7 | 4.42s | 3152.46ms | 1129.54 MB |
-| matches com String | #8 | 4.60s | 3360.58ms | 1164.21 MB |
-| matches com String | #9 | 4.63s | 3460.75ms | 1280.86 MB |
-| matches com String | #10 | 4.51s | 3305.28ms | 1239.43 MB |
-
-
-| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Pattern.compile** | #1 | 2.84s | 1718.56ms | 449.47 MB |
-| Pattern.compile | #2 | 2.65s | 1629.31ms | 429.09 MB |
-| Pattern.compile | #3 | 2.49s | 1480.55ms | 454.18 MB |
-| Pattern.compile | #4 | 2.64s | 1577.35ms | 430.80 MB |
-| Pattern.compile | #5 | 2.68s | 1598.89ms | 466.20 MB |
-| Pattern.compile | #6 | 2.73s | 1658.13ms | 450.72 MB |
-| Pattern.compile | #7 | 2.66s | 1652.95ms | 451.61 MB |
-| Pattern.compile | #8 | 2.57s | 1561.85ms | 441.00 MB |
-| Pattern.compile | #9 | 2.57s | 1559.94ms | 436.63 MB |
-| Pattern.compile | #10 | 2.64s | 1540.88ms | 429.25 MB |
-
-
-| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Sem Regex** | #1 | 1.85s | 832.57ms | 364.95 MB |
-| Sem Regex | #2 | 2.10s | 962.74ms | 343.99 MB |
-| Sem Regex | #3 | 2.17s | 1037.10ms | 310.91 MB |
-| Sem Regex | #4 | 2.05s | 981.12ms | 341.37 MB |
-| Sem Regex | #5 | 1.93s | 901.66ms | 342.00 MB |
-| Sem Regex | #6 | 1.87s | 833.01ms | 328.56 MB |
-| Sem Regex | #7 | 1.88s | 807.12ms | 337.92 MB |
-| Sem Regex | #8 | 2.22s | 1102.72ms | 321.79 MB |
-| Sem Regex | #9 | 1.87s | 816.83ms | 334.28 MB |
-| Sem Regex | #10 | 1.97s | 933.34ms | 327.39 MB |
-
-
-### Tempo Interno
-
-_Resultado obtido com `(end - start) / 1_000_000.0`_
-
-Enquanto as tabela acima mostra o custo que o sistema operacional percebe, a tabela abaixo isola apenas o tempo gasto dentro do loop de processamento do Java, descartando o tempo de inicialização da JVM.
-
-| Execução | Sem Compilar (ms) | Com Compilar (ms) | Sem Regex (ms) |
-| :---: | :---: | :---: | :---: |
-| #1 | 3308.36 ms | 1718.56 ms | 832.57 ms |
-| #2 | 3205.98 ms | 1629.31 ms | 962.74 ms |
-| #3 | 3306.97 ms | 1480.55 ms | 1037.10 ms |
-| #4 | 3273.83 ms | 1577.35 ms | 981.12 ms |
-| #5 | 3255.76 ms | 1598.89 ms | 901.66 ms |
-| #6 | 3482.45 ms | 1658.13 ms | 833.01 ms |
-| #7 | 3152.46 ms | 1652.95 ms | 807.12 ms |
-| #8 | 3360.58 ms | 1561.85 ms | 1102.72 ms |
-| #9 | 3460.75 ms | 1559.94 ms | 816.83 ms |
-| #10 | 3305.28 ms | 1540.88 ms | 933.34 ms |
+Abaixo, os resultados detalhados obtidos após processar um arquivo com **1.000.000 de registros** em cada modalidade em 100 execuções independentes.
 
 ![Tempo de Execução](/assets/img/comparacao-tempo-regex.png){: .shadow .rounded-10 }
 _Comparação do tempo total de execução em segundos._
@@ -423,8 +464,92 @@ _Comparação do tempo total de execução em segundos._
 ![Uso de Memória](/assets/img/comparacao-memoria-regex.png){: .shadow .rounded-10 }
 _Impacto no pico de consumo de memória (RSS)._
 
-> **Disclaimer:** Estes resultados presentes nas imagens foram obtidos utilizando o comando `/usr/bin/time -v`. É importante notar que esses valores incluem o tempo total de carregamento da JVM, o carregamento de todas as classes, a leitura do arquivo em disco e a saída no console. Em sistemas de longa duração (como serviços web), a diferença real é ainda mais drástica, pois o overhead inicial da JVM é diluído ao longo do tempo.
+
+Abaixo, os 10 primeiros de cada resultado obtido.
+
+| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
+| :--- | :---: | :---: | :---: | :---: |
+| **matches com String** | #1 | 5.74s | 4512.91ms | 1167.35 MB |
+| matches com String | #2 | 5.97s | 4290.21ms | 1549.72 MB |
+| matches com String | #3 | 4.45s | 3273.82ms | 1210.53 MB |
+| matches com String | #4 | 4.59s | 3319.22ms | 1265.25 MB |
+| matches com String | #5 | 4.63s | 3461.82ms | 1411.28 MB |
+| matches com String | #6 | 4.77s | 3643.85ms | 1308.84 MB |
+| matches com String | #7 | 4.53s | 3311.74ms | 1204.71 MB |
+| matches com String | #8 | 4.54s | 3233.60ms | 1211.24 MB |
+| matches com String | #9 | 4.45s | 3295.32ms | 1338.41 MB |
+| matches com String | #10 | 4.55s | 3371.40ms | 1352.38 MB |
+
+
+| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Pattern.compile** | #1 | 3.39s | 1748.88ms | 500.88 MB |
+| Pattern.compile | #2 | 3.09s | 1905.52ms | 454.08 MB |
+| Pattern.compile | #3 | 2.84s | 1669.36ms | 462.46 MB |
+| Pattern.compile | #4 | 2.77s | 1554.83ms | 469.36 MB |
+| Pattern.compile | #5 | 2.69s | 1587.82ms | 451.07 MB |
+| Pattern.compile | #6 | 2.67s | 1606.12ms | 454.46 MB |
+| Pattern.compile | #7 | 2.98s | 1878.03ms | 434.51 MB |
+| Pattern.compile | #8 | 2.86s | 1597.64ms | 402.27 MB |
+| Pattern.compile | #9 | 2.64s | 1588.42ms | 433.07 MB |
+| Pattern.compile | #10 | 2.68s | 1600.39ms | 447.91 MB |
+
+
+| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Sem Regex** | #1 | 2.47s | 926.41ms | 328.81 MB |
+| Sem Regex | #2 | 2.68s | 1324.74ms | 336.83 MB |
+| Sem Regex | #3 | 1.95s | 854.19ms | 335.47 MB |
+| Sem Regex | #4 | 2.16s | 1001.36ms | 348.33 MB |
+| Sem Regex | #5 | 2.30s | 1120.37ms | 312.73 MB |
+| Sem Regex | #6 | 2.11s | 872.31ms | 369.33 MB |
+| Sem Regex | #7 | 1.91s | 812.20ms | 311.07 MB |
+| Sem Regex | #8 | 2.09s | 953.61ms | 382.05 MB |
+| Sem Regex | #9 | 2.18s | 1081.28ms | 337.66 MB |
+| Sem Regex | #10 | 2.27s | 954.62ms | 359.85 MB |
+
+
+| Estratégia | Execução | Tempo Total (s) | Tempo Java (ms) | Memória (RSS MB) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Sem Regex Otimizado** | #1 | 1.93s | 707.63ms | 280.72 MB |
+| Sem Regex Otimizado | #2 | 2.34s | 532.44ms | 253.92 MB |
+| Sem Regex Otimizado | #3 | 1.82s | 658.33ms | 319.54 MB |
+| Sem Regex Otimizado | #4 | 1.75s | 510.32ms | 231.54 MB |
+| Sem Regex Otimizado | #5 | 1.79s | 684.61ms | 322.10 MB |
+| Sem Regex Otimizado | #6 | 1.66s | 570.10ms | 289.38 MB |
+| Sem Regex Otimizado | #7 | 1.70s | 590.80ms | 323.61 MB |
+| Sem Regex Otimizado | #8 | 1.81s | 580.85ms | 232.74 MB |
+| Sem Regex Otimizado | #9 | 1.74s | 534.97ms | 268.29 MB |
+| Sem Regex Otimizado | #10 | 1.64s | 540.97ms | 302.96 MB |
+
+
+> **Disclaimer:** Estes resultados presentes nas imagens foram obtidos utilizando o comando `/usr/bin/time -v`. Esses valores incluem o tempo total de carregamento da JVM, o carregamento de todas as classes, a leitura do arquivo em disco e a saída no console. Em sistemas de longa duração (como apis rest), a diferença real pode ser ainda mais drástica, pois o overhead inicial da JVM é diluído ao longo do tempo.
 {: .prompt-info }
+
+
+## Tempos só do loop
+
+_Resultado obtido com `(end - start) / 1_000_000.0` envolta do `try`_
+
+![Tempo de Execução](/assets/img/comparacao-tempo-loop-regex.png){: .shadow .rounded-10 }
+_Comparação do tempo total de execução em segundos só do loop._
+
+Enquanto as tabela acima mostra o custo que o sistema operacional percebe, a tabela abaixo isola apenas o tempo gasto dentro do loop de processamento do Java, descartando o tempo de inicialização da JVM.
+
+
+| Execução | Sem Compilar (ms) | Com Compilar (ms) | Sem Regex (ms) | Sem Regex Otimizado (ms) |
+| :---: | :---: | :---: | :---: | :---: |
+| #1 | 4512.91 ms | 1748.88 ms | 926.41 ms | 707.63 ms |
+| #2 | 4290.21 ms | 1905.52 ms | 1324.74 ms | 532.44 ms |
+| #3 | 3273.82 ms | 1669.36 ms | 854.19 ms | 658.33 ms |
+| #4 | 3319.22 ms | 1554.83 ms | 1001.36 ms | 510.32 ms |
+| #5 | 3461.82 ms | 1587.82 ms | 1120.37 ms | 684.61 ms |
+| #6 | 3643.85 ms | 1606.12 ms | 872.31 ms | 570.10 ms |
+| #7 | 3311.74 ms | 1878.03 ms | 812.20 ms | 590.80 ms |
+| #8 | 3233.60 ms | 1597.64 ms | 953.61 ms | 580.85 ms |
+| #9 | 3295.32 ms | 1588.42 ms | 1081.28 ms | 534.97 ms |
+| #10 | 3371.40 ms | 1600.39 ms | 954.62 ms | 540.97 ms |
+
 
 ### Ambiente de Teste
 
@@ -435,7 +560,6 @@ OS: Ubuntu 24.04.3 LTS x86_64
 Kernel: 6.17.0-20-generic 
 Shell: bash 5.2.21 
 CPU: Intel i5-7200U (4) @ 2.500GHz 
-GPU: Intel HD Graphics 620 
 Memory: 19876MiB
 ```
 
@@ -451,6 +575,7 @@ OpenJDK 64-Bit Server VM (build 25.0.2+10-Ubuntu-124.04, mixed mode, sharing)
 - **Sem Compilar:** A abordagem mais custosa. O alto uso de memória reflete a criação e descarte frenético de objetos de regex e matchers. O tempo de execução sofre com o desperdício de ciclos em "re-analisar" a mesma regra um milhão de vezes.
 - **Compilado:** Uma melhoria substancial. Ao pré-compilar os `Patterns`, eliminamos o overhead de análise sintática do regex em cada iteração. O consumo de memória estabiliza, mas ainda pagamos o preço de percorrer a NFA do motor de regex.
 - **Sem Regex:** Ao implementar uma lógica manual, removemos toda a abstração do motor de regex. O Java consegue otimizar loops simples de forma extremamente eficiente via JIT compiler, resultando no menor tempo e menor pegada de memória.
+- **Sem Regex Otimizado:** Ao removermos a utilização de `StringBuilder` e `substring`, e utilizarmos loop unrolling, permitimos que o JIT realize mais otimizações e o controle fino sobre a alocação de memória e o fluxo de execução faz toda a diferença.
 
 ## Por que a Lógica Manual Vence?
 
